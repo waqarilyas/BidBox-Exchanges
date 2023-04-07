@@ -1,10 +1,13 @@
 package models
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	"html"
 	"strings"
 
+	"github.com/adshao/go-binance/v2"
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
@@ -64,13 +67,29 @@ func (u *Key) Validate() error {
 	if u.ApiKey == "" {
 		return errors.New("api key required")
 	}
+	found := false
 	for _, v := range services {
 		if strings.ToLower(u.Service) == v {
-			return nil
+			found = true
+			fmt.Println(found)
+			break
 		}
 	}
-	return errors.New("Service does not exist")
+	/*if !found {
+		return errors.New("service not found")
+	}*/
+	client := binance.NewClient(u.ApiKey, u.SecretKey)
+	_, err := client.NewListPricesService().Do(context.Background())
+	if err != nil {
+		return err
+	}
+	return nil
 }
+
+/*
+func (u *Key) TestforBinance() error {
+
+}*/
 
 func (u *Key) SaveKey(db *gorm.DB) (*Key, error) {
 	err := db.Debug().Create(&u).Error
