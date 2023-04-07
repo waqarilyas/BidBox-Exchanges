@@ -1,0 +1,112 @@
+_type: export
+__export_format: 4
+__export_date: 2023-04-03T06:52:41.035Z
+__export_source: insomnia.desktop.app:v2023.1.0
+resources:
+  - _id: req_44e7987920b14e5083070d1f15d785f9
+    parentId: wrk_47c053c014af4e0db0305793fad2d57a
+    modified: 1680246151428
+    created: 1680245304441
+    url: http://localhost:8080/keys
+    name: Post Key
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"uid":"uhsjs738",
+        	"service":"bidget",
+        	"api_key":"hjshadjdksksbjwsn",
+        	"secret_key":"hkdklsjsjahsjhsjwu"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1680245304441
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_47c053c014af4e0db0305793fad2d57a
+    parentId: null
+    modified: 1680245063833
+    created: 1680245063833
+    name: Keys Service
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_85387054e0cf47db8f84549472036774
+    parentId: wrk_47c053c014af4e0db0305793fad2d57a
+    modified: 1680245294677
+    created: 1680245200996
+    url: http://localhost:8080/keys
+    name: Get All Keys
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1680245200996
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_33d15ced833f4863ac540bf5c93ef2a8
+    parentId: wrk_47c053c014af4e0db0305793fad2d57a
+    modified: 1680245622515
+    created: 1680245070358
+    url: http://localhost:8080/keys/dcc48f5b-f9f3-4109-86fd-897aa9a79438
+    name: Get Key By Id
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1680245070358
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_37ab84683e5e60f9c0c8e966abf043c0cbf0cca7
+    parentId: wrk_47c053c014af4e0db0305793fad2d57a
+    modified: 1680245063838
+    created: 1680245063838
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1680245063838
+    _type: environment
+  - _id: jar_37ab84683e5e60f9c0c8e966abf043c0cbf0cca7
+    parentId: wrk_47c053c014af4e0db0305793fad2d57a
+    modified: 1680245063840
+    created: 1680245063840
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_591e13bbbd6d4e748a1ad73db2aa2089
+    parentId: wrk_47c053c014af4e0db0305793fad2d57a
+    modified: 1680245063834
+    created: 1680245063834
+    fileName: Keys Service
+    contents: ""
+    contentType: yaml
+    _type: api_spec
