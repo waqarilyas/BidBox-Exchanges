@@ -3,8 +3,9 @@ package main
 import (
 	"os"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 
+	nested "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/joho/godotenv"
 	"github.com/kryptomind/bidboxapi/KeyService/controllers"
 )
@@ -13,13 +14,18 @@ var server = controllers.Server{}
 
 func Run() {
 	err := godotenv.Load()
+	log := logrus.New()
+	log.SetFormatter(&nested.Formatter{
+		HideKeys:    true,
+		FieldsOrder: []string{"file", "function"},
+	})
 	if err != nil {
-		log.WithFields(log.Fields{
+		log.WithFields(logrus.Fields{
 			"file":     "main.go",
 			"function": "Run",
 		}).Fatal("Error getting env")
 	} else {
-		log.WithFields(log.Fields{
+		log.WithFields(logrus.Fields{
 			"file":     "main.go",
 			"function": "Run",
 		}).Info("Getting Values")

@@ -9,6 +9,7 @@ require (
 
 require (
 	github.com/adshao/go-binance/v2 v2.4.1 // indirect
+	github.com/antonfisher/nested-logrus-formatter v1.3.1 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
