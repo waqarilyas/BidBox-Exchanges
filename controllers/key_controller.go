@@ -9,6 +9,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/kryptomind/bidboxapi/KeyService/models"
 	"github.com/kryptomind/bidboxapi/KeyService/response"
@@ -18,28 +19,48 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "controllers/key_controller.go",
+			"function": "CreateKey",
+		}).Error("Error reading request body")
 		response.ERROR(w, http.StatusUnprocessableEntity, err)
+		return
 	}
 	Key := models.Key{}
 	err = json.Unmarshal(body, &Key)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "controllers/key_controller.go",
+			"function": "CreateKey",
+		}).Error("Error parsing json payload")
 		response.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 	Key.Prepare()
 	err = Key.Validate()
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "controllers/key_controller.go",
+			"function": "CreateKey",
+		}).Error("Validation error - ", err)
 		response.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 	KeyCreated, err := Key.SaveKey(server.DB)
 
 	if err != nil {
-
+		log.WithFields(log.Fields{
+			"file":     "controllers/key_controller.go",
+			"function": "CreateKey",
+		}).Error("Error saving to database")
 		response.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 	w.Header().Set("Location", fmt.Sprintf("%s%s/%s", r.Host, r.RequestURI, KeyCreated.Uid))
+	log.WithFields(log.Fields{
+		"file":     "controllers/key_controller.go",
+		"function": "CreateKey",
+	}).Info("Key Created with Id ", KeyCreated.Uid)
 	response.JSON(w, http.StatusCreated, KeyCreated)
 }
 
