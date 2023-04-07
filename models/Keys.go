@@ -7,6 +7,8 @@ import (
 	"html"
 	"strings"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/adshao/go-binance/v2"
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
@@ -32,14 +34,26 @@ func Verify(hashedpassword, password string) error {
 func (u *Key) BeforeSave() error {
 	hashapi, err := Hash(u.ApiKey)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "BeforeSave",
+		}).Error("Error hashing API Key")
 		return err
 	}
 	hashsecret, err := Hash(u.SecretKey)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "BeforeSave",
+		}).Error("Error hashing Secret Key")
 		return err
 	}
 	u.ApiKey = string(hashapi)
 	u.SecretKey = string(hashsecret)
+	log.WithFields(log.Fields{
+		"file":     "models/Keys.go",
+		"function": "BeforeSave",
+	}).Info("Hashed Keys")
 	return nil
 }
 
@@ -56,15 +70,31 @@ var services = [...]string{
 
 func (u *Key) Validate() error {
 	if u.Uid == "" {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "Validate",
+		}).Error("Validation Error - user id required")
 		return errors.New("uid required")
 	}
 	if u.Service == "" {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "Validate",
+		}).Error("Validation Error - service required")
 		return errors.New("service required")
 	}
 	if u.SecretKey == "" {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "Validate",
+		}).Error("Validation Error - secret key required")
 		return errors.New("secret key required")
 	}
 	if u.ApiKey == "" {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "Validate",
+		}).Error("Validation Error - api key required")
 		return errors.New("api key required")
 	}
 	found := false
@@ -83,6 +113,10 @@ func (u *Key) Validate() error {
 	if err != nil {
 		return err
 	}
+	log.WithFields(log.Fields{
+		"file":     "models/Keys.go",
+		"function": "Validate",
+	}).Info("Validation passed")
 	return nil
 }
 
@@ -94,8 +128,16 @@ func (u *Key) TestforBinance() error {
 func (u *Key) SaveKey(db *gorm.DB) (*Key, error) {
 	err := db.Debug().Create(&u).Error
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "SaveKey",
+		}).Error("Database Error - could not save key")
 		return &Key{}, err
 	}
+	log.WithFields(log.Fields{
+		"file":     "models/Keys.go",
+		"function": "SaveKey",
+	}).Info("User saved to database successfully")
 	return u, nil
 }
 
@@ -103,18 +145,38 @@ func (u *Key) FindAllKeys(db *gorm.DB) (*[]Key, error) {
 	Keys := []Key{}
 	err := db.Debug().Model(&Key{}).Limit(100).Find(&Keys).Error
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "FindAllKeys",
+		}).Error("Database Error - could not get keys")
 		return &[]Key{}, err
 	}
+	log.WithFields(log.Fields{
+		"file":     "models/Keys.go",
+		"function": "FindAllKeys",
+	}).Info("Successfully retrieved keys")
 	return &Keys, nil
 }
 
 func (u *Key) FindKeyById(db *gorm.DB, kid uuid.UUID) (*Key, error) {
 	err := db.Debug().Model(Key{}).Where("keyid = ?", kid).Take(&u).Error
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "FindKeyById",
+		}).Error("Database Error - could not get key ny id")
 		return &Key{}, err
 	}
 	if gorm.IsRecordNotFoundError(err) {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "FindKeyById",
+		}).Info("Database - key not found")
 		return &Key{}, errors.New("Key not found")
 	}
+	log.WithFields(log.Fields{
+		"file":     "models/Keys.go",
+		"function": "FindKeyById",
+	}).Info("Successfully got key by id")
 	return u, nil
 }
