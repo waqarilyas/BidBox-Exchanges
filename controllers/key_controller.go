@@ -70,9 +70,17 @@ func (server *Server) GetKeys(w http.ResponseWriter, r *http.Request) {
 
 	Keys, err := Key.FindAllKeys(server.DB)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "controllers/key_controller.go",
+			"function": "GetKeys",
+		}).Error("Error getting keys from database")
 		response.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
+	log.WithFields(log.Fields{
+		"file":     "controllers/key_controller.go",
+		"function": "GetKeys",
+	}).Info("Retrieved keys successfully")
 	response.JSON(w, http.StatusOK, Keys)
 }
 
@@ -81,14 +89,26 @@ func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 	kid := mux.Vars(r)["id"] //grab the id
 	new_kid, err := uuid.Parse(kid)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "controllers/key_controller.go",
+			"function": "GetKey",
+		}).Error("key id is invalid")
 		response.ERROR(w, http.StatusBadRequest, errors.New("invalid key id"))
 		return
 	}
 	Key := models.Key{}
 	KeyGotten, err := Key.FindKeyById(server.DB, new_kid)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"file":     "controllers/key_controller.go",
+			"function": "GetKey",
+		}).Error("Invalid key")
 		response.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
+	log.WithFields(log.Fields{
+		"file":     "controllers/key_controller.go",
+		"function": "GetKey",
+	}).Info("Successfully retrieved key")
 	response.JSON(w, http.StatusOK, KeyGotten)
 }
