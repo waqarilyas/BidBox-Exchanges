@@ -1,0 +1,90 @@
+package helpers
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+func ValidateBitgetKeys(w http.ResponseWriter, apiSecret string, apiKey string, passphrase string) (string, error) {
+	host := "https://api.bitget.com"
+	path := "/api/spot/v1/account/getInfo"
+	url := host + path
+
+	serverTimestamp := GetBitgetServerTimeStamp()
+
+	signatures := GenerateBitgetSignature(apiSecret, apiKey, passphrase, "GET", path, serverTimestamp)
+
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		fmt.Print("-----error in request---", err.Error())
+
+		return "", err
+	}
+
+	req.Header.Add("ACCESS-KEY", apiKey)
+	req.Header.Add("ACCESS-PASSPHRASE", passphrase)
+	req.Header.Add("ACCESS-TIMESTAMP", serverTimestamp)
+	req.Header.Add("ACCESS-SIGN", signatures)
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Print(err.Error())
+
+		return "", err
+	}
+
+	defer res.Body.Close()
+
+	body, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		fmt.Print("---read error---", err.Error())
+
+		return "", readErr
+	}
+
+	fmt.Println(string(body))
+	return string(body), nil
+
+}
+
+type bitgetServerTimeStampResponse struct {
+	Code        string `json:"code"`
+	Msg         string `json:"msg"`
+	RequestTime int    `json:"requestTime"`
+	Data        string `json:"data"`
+}
+
+func GetBitgetServerTimeStamp() string {
+
+	url := "https://api.bitget.com/api/spot/v1/public/time"
+
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		fmt.Print("-----error in request---", err.Error())
+	}
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Print(err.Error())
+	}
+
+	defer res.Body.Close()
+
+	body, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		fmt.Print("---read error---", err.Error())
+	}
+
+	var response bitgetServerTimeStampResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		fmt.Print("---json unmarshal error---", err.Error())
+	}
+
+	return response.Data
+
+}

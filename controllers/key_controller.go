@@ -36,6 +36,7 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 		response.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
+
 	Key.Prepare()
 	err = Key.Validate()
 	if err != nil {

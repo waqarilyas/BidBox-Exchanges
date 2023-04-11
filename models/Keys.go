@@ -17,7 +17,7 @@ import (
 
 type Key struct {
 	Keyid     uuid.UUID `gorm:"primary_key;type:uuid;default:gen_random_uuid()" json:"key_id"`
-	Uid       string    `gorm:"size:255;not null" json:"uid"`
+	Uid       string    `gorm:"size:255" json:"uid"`
 	Service   string    `gorm:"size:255;not null" json:"service"`
 	ApiKey    string    `gorm:"not null;unique" json:"api_key"`
 	SecretKey string    `gorm:"not null;unique" json:"secret_key"`
