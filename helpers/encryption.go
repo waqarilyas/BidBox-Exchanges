@@ -12,7 +12,6 @@ import (
 
 func EncryptStrings(plaintext string) (string, error) {
 	keyString := os.Getenv("ENCRYPTION_PASS")
-
 	key := []byte(keyString)
 	block, err := aes.NewCipher(key)
 	if err != nil {

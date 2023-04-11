@@ -45,27 +45,17 @@ func ValidateBitgetKeys(apiSecret string, apiKey string, passphrase string) (str
 		return "", readErr
 	}
 
-	// Check if the HTTP status code is in the error range (not 2xx)
 	if res.StatusCode < 200 || res.StatusCode >= 300 {
 		return "", errors.New("api key validation failed. Invalid credentials")
 
-		// return "", fmt.Errorf("API error: %s", string(body))
 	}
 
 	return string(body), nil
 }
 
-type bitgetServerTimeStampResponse struct {
-	Code        string `json:"code"`
-	Msg         string `json:"msg"`
-	RequestTime int    `json:"requestTime"`
-	Data        string `json:"data"`
-}
-
 func GetBitgetServerTimeStamp() string {
 
 	url := "https://api.bitget.com/api/spot/v1/public/time"
-
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
@@ -78,7 +68,6 @@ func GetBitgetServerTimeStamp() string {
 	}
 
 	defer res.Body.Close()
-
 	body, readErr := ioutil.ReadAll(res.Body)
 	if readErr != nil {
 		fmt.Print("---read error---", err.Error())
