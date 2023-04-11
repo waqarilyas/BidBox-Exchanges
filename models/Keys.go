@@ -68,7 +68,7 @@ var services = [...]string{
 	"OKX",
 }
 
-func (u *Key) Validate() error {
+func (u *Key) ValidateKeys(db *gorm.DB) error {
 	if u.Uid == "" {
 		log.WithFields(log.Fields{
 			"file":     "models/Keys.go",
@@ -97,17 +97,23 @@ func (u *Key) Validate() error {
 		}).Error("Validation Error - api key required")
 		return errors.New("api key required")
 	}
+	Exchange := Exchanges{}
+
+	Exchanges, err := Exchange.FindAllExchanges(db)
+	if err != nil {
+		return errors.New("error getting exchnages")
+	}
+	p := strings.ToLower(u.Service)
 	found := false
-	for _, v := range services {
-		if strings.ToLower(u.Service) == v {
+	for _, v := range *Exchanges {
+		if strings.Compare(strings.ToLower(v.Name), p) == 0 {
 			found = true
-			fmt.Println(found)
 			break
 		}
 	}
-	/*if !found {
-		return errors.New("service not found")
-	}*/
+	if found == false {
+		return errors.New("exchange does not exist")
+	}
 	client := binance.NewClient(u.ApiKey, u.SecretKey)
 	_, err := client.NewListPricesService().Do(context.Background())
 	if err != nil {
