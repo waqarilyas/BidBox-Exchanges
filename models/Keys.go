@@ -7,6 +7,7 @@ import (
 	"html"
 	"strings"
 
+	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/adshao/go-binance/v2"
@@ -16,11 +17,12 @@ import (
 )
 
 type Key struct {
-	Keyid     uuid.UUID `gorm:"primary_key;type:uuid;default:gen_random_uuid()" json:"key_id"`
-	Uid       string    `gorm:"size:255" json:"uid"`
-	Service   string    `gorm:"size:255;not null" json:"service"`
-	ApiKey    string    `gorm:"not null;unique" json:"api_key"`
-	SecretKey string    `gorm:"not null;unique" json:"secret_key"`
+	Keyid      uuid.UUID `gorm:"primary_key;type:uuid;default:gen_random_uuid()" json:"key_id"`
+	Uid        string    `gorm:"size:255" json:"uid"`
+	Service    string    `gorm:"size:255;not null" json:"service"`
+	ApiKey     string    `gorm:"not null;unique" json:"api_key"`
+	SecretKey  string    `gorm:"not null;unique" json:"secret_key"`
+	Passphrase string    `gorm:"" json:"passphrase"`
 }
 
 func Hash(password string) ([]byte, error) {
@@ -32,7 +34,7 @@ func Verify(hashedpassword, password string) error {
 }
 
 func (u *Key) BeforeSave() error {
-	hashapi, err := Hash(u.ApiKey)
+	hashapi, err := helpers.EncryptStrings(u.ApiKey)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"file":     "models/Keys.go",
@@ -40,7 +42,8 @@ func (u *Key) BeforeSave() error {
 		}).Error("Error hashing API Key")
 		return err
 	}
-	hashsecret, err := Hash(u.SecretKey)
+
+	hashsecret, err := helpers.EncryptStrings(u.SecretKey)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"file":     "models/Keys.go",
@@ -48,6 +51,21 @@ func (u *Key) BeforeSave() error {
 		}).Error("Error hashing Secret Key")
 		return err
 	}
+
+	if u.Passphrase != "" {
+		hashpassphrase, err := helpers.EncryptStrings(u.Passphrase)
+		if err != nil {
+			log.WithFields(log.Fields{
+				"file":     "models/Keys.go",
+				"function": "BeforeSave",
+			}).Error("Error hashing passphrase")
+			return err
+		}
+
+		u.Passphrase = string(hashpassphrase)
+
+	}
+
 	u.ApiKey = string(hashapi)
 	u.SecretKey = string(hashsecret)
 	log.WithFields(log.Fields{
@@ -60,6 +78,7 @@ func (u *Key) BeforeSave() error {
 func (u *Key) Prepare() {
 	u.ApiKey = html.EscapeString(strings.TrimSpace(u.ApiKey))
 	u.SecretKey = html.EscapeString(strings.TrimSpace(u.SecretKey))
+	u.Passphrase = html.EscapeString(strings.TrimSpace(u.Passphrase))
 }
 
 var services = [...]string{
@@ -68,13 +87,22 @@ var services = [...]string{
 	"OKX",
 }
 
-func (u *Key) ValidateKeys(db *gorm.DB) error {
-	if u.Uid == "" {
+func (u *Key) Validate() error {
+
+	if u.Service != "bitget" {
 		log.WithFields(log.Fields{
 			"file":     "models/Keys.go",
 			"function": "Validate",
-		}).Error("Validation Error - user id required")
-		return errors.New("uid required")
+		}).Error("Validation Error - invalid exchange")
+		return errors.New("invalid service. Only bitget is supported yet")
+	}
+
+	if u.Service == "bitget" && u.Passphrase == "" {
+		log.WithFields(log.Fields{
+			"file":     "models/Keys.go",
+			"function": "Validate",
+		}).Error("Validation Error - passphrase required")
+		return errors.New("passphrase is required")
 	}
 	if u.Service == "" {
 		log.WithFields(log.Fields{
@@ -88,32 +116,26 @@ func (u *Key) ValidateKeys(db *gorm.DB) error {
 			"file":     "models/Keys.go",
 			"function": "Validate",
 		}).Error("Validation Error - secret key required")
-		return errors.New("secret key required")
+		return errors.New("secret_key required")
 	}
 	if u.ApiKey == "" {
 		log.WithFields(log.Fields{
 			"file":     "models/Keys.go",
 			"function": "Validate",
 		}).Error("Validation Error - api key required")
-		return errors.New("api key required")
+		return errors.New("api_key required")
 	}
-	Exchange := Exchanges{}
-
-	Exchanges, err := Exchange.FindAllExchanges(db)
-	if err != nil {
-		return errors.New("error getting exchnages")
-	}
-	p := strings.ToLower(u.Service)
 	found := false
-	for _, v := range *Exchanges {
-		if strings.Compare(strings.ToLower(v.Name), p) == 0 {
+	for _, v := range services {
+		if strings.ToLower(u.Service) == v {
 			found = true
+			fmt.Println(found)
 			break
 		}
 	}
-	if found == false {
-		return errors.New("exchange does not exist")
-	}
+	/*if !found {
+		return errors.New("service not found")
+	}*/
 	client := binance.NewClient(u.ApiKey, u.SecretKey)
 	_, err := client.NewListPricesService().Do(context.Background())
 	if err != nil {

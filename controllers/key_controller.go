@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	"github.com/kryptomind/bidboxapi/KeyService/models"
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
@@ -38,15 +39,25 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Key.Prepare()
-	err = Key.ValidateKeys(server.DB)
-	if err != nil {
+
+	valErr := Key.Validate()
+	if valErr != nil {
 		log.WithFields(log.Fields{
 			"file":     "controllers/key_controller.go",
 			"function": "CreateKey",
-		}).Error("Validation error - ", err)
-		response.ERROR(w, http.StatusUnprocessableEntity, err)
+		}).Error("Validation error - ", valErr)
+		response.ERROR(w, http.StatusUnprocessableEntity, valErr)
 		return
 	}
+
+	valRes, validationError := helpers.ValidateBitgetKeys(Key.SecretKey, Key.ApiKey, Key.Passphrase)
+	if validationError != nil {
+		response.ERROR(w, http.StatusBadRequest, validationError)
+		return
+	}
+
+	fmt.Println(valRes)
+
 	KeyCreated, err := Key.SaveKey(server.DB)
 
 	if err != nil {
@@ -62,7 +73,9 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 		"file":     "controllers/key_controller.go",
 		"function": "CreateKey",
 	}).Info("Key Created with Id ", KeyCreated.Uid)
-	response.JSON(w, http.StatusCreated, KeyCreated)
+
+	response.JSON(w, http.StatusOK, "Api key validated and saved successfully")
+
 }
 
 func (server *Server) CreateExchanges(w http.ResponseWriter, r *http.Request) {

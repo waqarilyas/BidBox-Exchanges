@@ -2,12 +2,13 @@ package helpers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
-func ValidateBitgetKeys(w http.ResponseWriter, apiSecret string, apiKey string, passphrase string) (string, error) {
+func ValidateBitgetKeys(apiSecret string, apiKey string, passphrase string) (string, error) {
 	host := "https://api.bitget.com"
 	path := "/api/spot/v1/account/getInfo"
 	url := host + path
@@ -41,13 +42,17 @@ func ValidateBitgetKeys(w http.ResponseWriter, apiSecret string, apiKey string, 
 	body, readErr := ioutil.ReadAll(res.Body)
 	if readErr != nil {
 		fmt.Print("---read error---", err.Error())
-
 		return "", readErr
 	}
 
-	fmt.Println(string(body))
-	return string(body), nil
+	// Check if the HTTP status code is in the error range (not 2xx)
+	if res.StatusCode < 200 || res.StatusCode >= 300 {
+		return "", errors.New("api key validation failed. Invalid credentials")
 
+		// return "", fmt.Errorf("API error: %s", string(body))
+	}
+
+	return string(body), nil
 }
 
 type bitgetServerTimeStampResponse struct {
