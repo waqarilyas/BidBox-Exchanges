@@ -9,7 +9,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	log "github.com/sirupsen/logrus"
+
+	//log "github.com/sirupsen/logrus"
 
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	"github.com/kryptomind/bidboxapi/KeyService/models"
@@ -19,20 +20,12 @@ import (
 func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		log.WithFields(log.Fields{
-			"file":     "controllers/key_controller.go",
-			"function": "CreateKey",
-		}).Error("Error reading request body")
 		response.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 	Key := models.Key{}
 	err = json.Unmarshal(body, &Key)
 	if err != nil {
-		log.WithFields(log.Fields{
-			"file":     "controllers/key_controller.go",
-			"function": "CreateKey",
-		}).Error("Error parsing json payload")
 		response.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
@@ -41,10 +34,6 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 
 	valErr := Key.Validate()
 	if valErr != nil {
-		log.WithFields(log.Fields{
-			"file":     "controllers/key_controller.go",
-			"function": "CreateKey",
-		}).Error("Validation error - ", valErr)
 		response.ERROR(w, http.StatusUnprocessableEntity, valErr)
 		return
 	}
@@ -60,19 +49,10 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 	KeyCreated, err := Key.SaveKey(server.DB)
 
 	if err != nil {
-		log.WithFields(log.Fields{
-			"file":     "controllers/key_controller.go",
-			"function": "CreateKey",
-		}).Error("Error saving to database")
 		response.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 	w.Header().Set("Location", fmt.Sprintf("%s%s/%s", r.Host, r.RequestURI, KeyCreated.Uid))
-	log.WithFields(log.Fields{
-		"file":     "controllers/key_controller.go",
-		"function": "CreateKey",
-	}).Info("Key Created with Id ", KeyCreated.Uid)
-
 	response.JSON(w, http.StatusOK, "Api key validated and saved successfully")
 }
 
@@ -82,17 +62,9 @@ func (server *Server) GetKeys(w http.ResponseWriter, r *http.Request) {
 
 	Keys, err := Key.FindAllKeys(server.DB)
 	if err != nil {
-		log.WithFields(log.Fields{
-			"file":     "controllers/key_controller.go",
-			"function": "GetKeys",
-		}).Error("Error getting keys from database")
 		response.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	log.WithFields(log.Fields{
-		"file":     "controllers/key_controller.go",
-		"function": "GetKeys",
-	}).Info("Retrieved keys successfully")
 	response.JSON(w, http.StatusOK, Keys)
 }
 
@@ -101,26 +73,14 @@ func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 	kid := mux.Vars(r)["id"] //grab the id
 	new_kid, err := uuid.Parse(kid)
 	if err != nil {
-		log.WithFields(log.Fields{
-			"file":     "controllers/key_controller.go",
-			"function": "GetKey",
-		}).Error("key id is invalid")
 		response.ERROR(w, http.StatusBadRequest, errors.New("invalid key id"))
 		return
 	}
 	Key := models.Key{}
 	KeyGotten, err := Key.FindKeyById(server.DB, new_kid)
 	if err != nil {
-		log.WithFields(log.Fields{
-			"file":     "controllers/key_controller.go",
-			"function": "GetKey",
-		}).Error("Invalid key")
 		response.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
-	log.WithFields(log.Fields{
-		"file":     "controllers/key_controller.go",
-		"function": "GetKey",
-	}).Info("Successfully retrieved key")
 	response.JSON(w, http.StatusOK, KeyGotten)
 }
