@@ -19,7 +19,7 @@ func (e *Exchanges) ValidateExchange() error {
 		return errors.New("name required")
 	}
 	if e.ImageSrc == "" {
-		return errors.New("image src required")
+		return errors.New("image_src is required")
 	}
 	if e.Short == "" {
 		return errors.New("short alias required")
