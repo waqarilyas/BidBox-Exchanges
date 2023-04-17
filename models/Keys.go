@@ -85,6 +85,10 @@ func (u *Key) Validate() error {
 	if u.ApiKey == "" {
 		return errors.New("api_key required")
 	}
+	if u.Uid == "" {
+		return errors.New("uid is required required")
+	}
+
 	found := false
 	for _, v := range services {
 		if strings.ToLower(u.Service) == v {

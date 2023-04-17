@@ -17,6 +17,10 @@ import (
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
 
+func (server *Server) Home(w http.ResponseWriter, r *http.Request) {
+	response.JSON(w, http.StatusOK, "Exchanges Service")
+}
+
 func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
