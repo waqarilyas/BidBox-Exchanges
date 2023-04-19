@@ -42,13 +42,17 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	valRes, validationError := helpers.ValidateBitgetKeys(Key.SecretKey, Key.ApiKey, Key.Passphrase)
+	_, validationError := helpers.ValidateBitgetKeys(Key.SecretKey, Key.ApiKey, Key.Passphrase)
 	if validationError != nil {
-		response.ERROR(w, http.StatusBadRequest, validationError)
+		response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
 		return
 	}
 
-	fmt.Println(valRes)
+	dbRes, _ := Key.FindKeyByEmailAndService(server.DB, Key.Service, Key.UserEmail)
+	if dbRes != nil {
+		response.ERROR(w, http.StatusBadRequest, errors.New("api key already exists"))
+		return
+	}
 
 	KeyCreated, err := Key.SaveKey(server.DB)
 
