@@ -68,9 +68,6 @@ var services = []string{
 
 func (u *Key) Validate() error {
 
-	if u.Service != "bitget" {
-		return errors.New("invalid service. Only bitget is supported yet")
-	}
 	if u.Service == "bitget" && u.Passphrase == "" {
 		return errors.New("passphrase is required")
 	}
