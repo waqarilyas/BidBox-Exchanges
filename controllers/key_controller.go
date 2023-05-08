@@ -42,10 +42,12 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, validationError := helpers.ValidateBitgetKeys(Key.SecretKey, Key.ApiKey, Key.Passphrase)
-	if validationError != nil {
-		response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
-		return
+	if Key.Service == "bitget" {
+		_, validationError := helpers.ValidateBitgetKeys(Key.SecretKey, Key.ApiKey, Key.Passphrase)
+		if validationError != nil {
+			response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
+			return
+		}
 	}
 
 	dbRes, _ := Key.FindKeyByEmailAndService(server.DB, Key.Service, Key.UserEmail)
