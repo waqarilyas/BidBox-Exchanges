@@ -1,11 +1,18 @@
-package controllers
+package api
 
-import "github.com/kryptomind/bidboxapi/KeyService/middleware"
+import (
+	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
+	"github.com/kryptomind/bidboxapi/KeyService/middleware"
+)
 
-func (r *Server) initializeRoutes() {
+type Server struct {
+	DB     *gorm.DB
+	Router *mux.Router
+}
 
+func (r *Server) InitializeRoutes() {
 	s := r.Router.PathPrefix("/exchanges").Subrouter()
-
 	s.HandleFunc("/", middleware.MiddlewareJSON(r.Home)).Methods("GET")
 
 	//Keys routes

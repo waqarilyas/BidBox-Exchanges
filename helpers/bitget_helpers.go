@@ -21,7 +21,6 @@ func ValidateBitgetKeys(apiSecret string, apiKey string, passphrase string) (str
 
 	if err != nil {
 		fmt.Print("-----error in request---", err.Error())
-
 		return "", err
 	}
 

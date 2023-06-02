@@ -1,4 +1,4 @@
-package helpers
+package bitget
 
 import (
 	"crypto/hmac"
@@ -7,11 +7,10 @@ import (
 	"fmt"
 )
 
-func GenerateBitgetSignature(apiSecret string, apiKey string, passphrase string, method string, uri string, timestamp string) string {
+func GenerateBitgetSignature(apiSecret string, method string, uri string, timestamp string) string {
 	message := fmt.Sprintf("%s%s%s", timestamp, method, uri)
 	hmac := hmac.New(sha256.New, []byte(apiSecret))
 	hmac.Write([]byte(message))
 	signature := base64.StdEncoding.EncodeToString(hmac.Sum(nil))
-
 	return signature
 }
