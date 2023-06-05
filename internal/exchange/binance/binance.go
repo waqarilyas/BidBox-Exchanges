@@ -16,9 +16,9 @@ const (
 func GetBinanceAccountDetails(apiKey string, secret string) (*AccountsResponse, error) {
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
 
-	params := map[string]interface{}{
-		"timestamp":  timestamp,
-		"recvWindow": 5000,
+	params := map[string]string{
+		"timestamp":  strconv.FormatInt(timestamp, 10),
+		"recvWindow": "5000",
 	}
 
 	accSignature := GenerateBinanceSignature(params, secret)
