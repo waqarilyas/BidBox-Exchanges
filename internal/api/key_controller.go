@@ -80,7 +80,7 @@ func (server *Server) GetKeys(w http.ResponseWriter, r *http.Request) {
 
 func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 
-	kid := mux.Vars(r)["id"] //grab the id
+	kid := mux.Vars(r)["id"]
 	new_kid, err := uuid.Parse(kid)
 	if err != nil {
 		response.ERROR(w, http.StatusBadRequest, errors.New("invalid key id"))

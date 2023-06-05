@@ -36,6 +36,7 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 	}
 
 	server.Router = routeModule.Router
+	routeModule.DB = server.DB
 	routeModule.InitializeRoutes()
 }
 
