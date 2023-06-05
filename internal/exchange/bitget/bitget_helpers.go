@@ -19,7 +19,6 @@ func GenerateBitgetSignature(apiSecret string, method string, uri string, timest
 }
 
 func TransformAccountsResponse(accountsData AccountData) shared.AccountData {
-
 	totalAvailable := 0.0
 	totalUnrealizedPL := 0.0
 	totalEquity := 0.0
@@ -29,9 +28,7 @@ func TransformAccountsResponse(accountsData AccountData) shared.AccountData {
 		if err != nil {
 			fmt.Println("Error parsing available balance:", err)
 		}
-
 		totalAvailable += available
-
 		equity, err := strconv.ParseFloat(marginData.USDTEquity, 64)
 		if err != nil {
 			fmt.Println("Error parsing equity:", err)

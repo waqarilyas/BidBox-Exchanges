@@ -19,16 +19,20 @@ func DecryptUserKeys(keys *models.Key) (*DecryptedKeys, error) {
 		return nil, errors.New("unable to decrypt api secret")
 
 	}
-	passphrase, err := helpers.DecryptStrings(keys.Passphrase)
-	if err != nil {
-		return nil, errors.New("unable to decrypt passphrase")
-
-	}
 
 	dKeys := &DecryptedKeys{
-		ApiKey:     api_key,
-		Secret:     api_secret,
-		Passphrase: passphrase,
+		ApiKey: api_key,
+		Secret: api_secret,
+	}
+
+	if keys.Passphrase != "" {
+		passphrase, err := helpers.DecryptStrings(keys.Passphrase)
+		if err != nil {
+			return nil, errors.New("unable to decrypt passphrase")
+		}
+
+		dKeys.Passphrase = passphrase
+
 	}
 
 	return dKeys, nil

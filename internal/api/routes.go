@@ -22,8 +22,12 @@ func (r *Server) InitializeRoutes() {
 	s.HandleFunc("/supported", middleware.MiddlewareJSON(r.GetExchanges)).Methods("GET")
 	s.HandleFunc("/", middleware.MiddlewareJSON(r.CreateExchanges)).Methods("POST")
 
-	// Bitget Data Rputes
+	// Bitget Data Routes
 	s.HandleFunc("/bitget/account", middleware.MiddlewareJSON(r.GetBitgetAccountDetailsData)).Methods("GET")
 	s.HandleFunc("/bitget/positions", middleware.MiddlewareJSON(r.GetBitgetOpenPositions)).Methods("GET")
+
+	// Bybit Routes
+	s.HandleFunc("/bybit/account", middleware.MiddlewareJSON(r.GetBybitAccountDetails)).Methods("GET")
+	s.HandleFunc("/bybit/positions", middleware.MiddlewareJSON(r.GetBitgetOpenPositions)).Methods("GET")
 
 }
