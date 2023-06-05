@@ -61,12 +61,11 @@ func GetBinanceAccountDetails(apiKey string, secret string) (*AccountsResponse, 
 	return &response, nil
 }
 
-func GetBinanceAccountOpenPositions(apiKey string, secret string) (*AccountsResponse, error) {
+func GetBinanceAccountOpenPositions(apiKey string, secret string) (*[]Position, error) {
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
 
 	params := map[string]string{
-		"timestamp":  strconv.FormatInt(timestamp, 10),
-		"recvWindow": "5000",
+		"timestamp": strconv.FormatInt(timestamp, 10),
 	}
 
 	accSignature := GenerateBinanceSignature(params, secret)
@@ -100,11 +99,12 @@ func GetBinanceAccountOpenPositions(apiKey string, secret string) (*AccountsResp
 		return nil, errors.New(errorResponse.Msg)
 	}
 
-	var response AccountsResponse
-	err = json.Unmarshal(body, &response)
+	var positions []Position
+
+	err = json.Unmarshal(body, &positions)
 	if err != nil {
 		return nil, err
 	}
 
-	return &response, nil
+	return &positions, nil
 }
