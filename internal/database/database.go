@@ -7,8 +7,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/kryptomind/BidBox-Trades/models"
+
 	"github.com/kryptomind/bidboxapi/KeyService/internal/api"
+	"github.com/kryptomind/bidboxapi/KeyService/models"
 	log "github.com/sirupsen/logrus"
 )
 
