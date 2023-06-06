@@ -28,6 +28,10 @@ func (r *Server) InitializeRoutes() {
 
 	// Bybit Routes
 	s.HandleFunc("/bybit/account", middleware.MiddlewareJSON(r.GetBybitAccountDetails)).Methods("GET")
-	s.HandleFunc("/bybit/positions", middleware.MiddlewareJSON(r.GetBitgetOpenPositions)).Methods("GET")
+	s.HandleFunc("/bybit/positions", middleware.MiddlewareJSON(r.GetBybitAccountPositions)).Methods("GET")
+
+	// Binance Routes
+	s.HandleFunc("/binance/account", middleware.MiddlewareJSON(r.GetBinanceAccountDetailsData)).Methods("GET")
+	s.HandleFunc("/binance/positions", middleware.MiddlewareJSON(r.GetBybitAccountPositions)).Methods("GET")
 
 }

@@ -17,7 +17,7 @@ type PositionsData struct {
 	Symbol           string `json:"symbol"`
 	MarginCoin       string `json:"marginCoin"`
 	HoldSide         string `json:"holdSide"`
-	Margin           string `json:":margin"`
+	Margin           string `json:"margin"`
 	Available        string `json:"available"`
 	Total            string `json:"total"`
 	MarginMode       string `json:"marginMode"`

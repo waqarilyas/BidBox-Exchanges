@@ -46,7 +46,6 @@ func GetBybitApiKeyInfo(apiKey, secret string) (*APIKeyInfoResponse, error) {
 
 func GetBybitAccountDetails(apiKey string, secret string) (*AccountInfo, error) {
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
-
 	accSignature := GenerateBybitSignature(apiKey, secret, 50000, timestamp, "")
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/v5/account/info", BybitAPIEndpoint), nil)
@@ -154,7 +153,6 @@ func GetBybitAccountBalance(apiKey string, secret string) (*shared.AccountData, 
 }
 
 func GetBybitAccountPositions(apiKey string, secret string) (*PositionsResponse, error) {
-
 	queryString := "settleCoin=USDT&category=linear"
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
 	accSignature := GenerateBybitSignature(apiKey, secret, 50000, timestamp, queryString)

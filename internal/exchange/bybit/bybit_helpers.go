@@ -86,3 +86,41 @@ func TransformUnifiedAccountBalance(accountData AccountBalanceResponse) shared.A
 	}
 
 }
+
+func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.PositionsData {
+	positionsList := positionData.Result.List
+
+	var formattedPositions []shared.PositionsData
+
+	for _, position := range positionsList {
+
+		positionSide := "long"
+		holdMode := "single_hold"
+
+		if position.Side == "short" {
+			positionSide = "short"
+		}
+
+		if position.PositionIdx == 1 {
+			holdMode = "double_hold"
+		}
+
+		pos := shared.PositionsData{
+			MarginCoin:       position.Symbol,
+			Symbol:           position.Symbol,
+			HoldSide:         positionSide,
+			Margin:           position.PositionMM,
+			Available:        position.PositionValue,
+			Total:            position.Size,
+			MarginMode:       "fixed",
+			HoldMode:         holdMode,
+			LiquidationPrice: position.LiqPrice,
+			MarketPrice:      position.MarkPrice,
+			CreationTime:     position.CreatedTime,
+		}
+
+		formattedPositions = append(formattedPositions, pos)
+	}
+
+	return formattedPositions
+}
