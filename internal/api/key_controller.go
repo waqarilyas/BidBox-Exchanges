@@ -11,6 +11,8 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/exchange/binance"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/exchange/bybit"
 	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
 
 	"github.com/kryptomind/bidboxapi/KeyService/response"
@@ -47,6 +49,26 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 			response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
 			return
 		}
+	} else if Key.Service == "binance" {
+		_, validationError := binance.GetBinanceAccountDetails(Key.ApiKey, Key.SecretKey)
+		if validationError != nil {
+			response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
+			return
+		}
+	} else if Key.Service == "bybit" {
+		bybitKeyInfo, validationError := bybit.GetBybitApiKeyInfo(Key.ApiKey, Key.SecretKey)
+		if validationError != nil {
+			response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
+			return
+		}
+
+		permissions := bybitKeyInfo.Result[0].Permissions
+		hasPermission := bybit.HasRequiredPermissions(permissions)
+		if !hasPermission {
+			response.ERROR(w, http.StatusBadRequest, errors.New("insufficient key permissions. Please provide permissions for 'Order', 'Position', 'ExchangeHistory'"))
+			return
+		}
+
 	}
 
 	dbRes, _ := Key.FindKeyByEmailAndService(server.DB, Key.Service, Key.UserEmail)
