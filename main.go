@@ -35,6 +35,13 @@ func Run() {
 
 	databaseConnection.Initialize(os.Getenv("DB_DRIVER"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
 	server.DB = databaseConnection.DB
+
+	// response, err := bitget.PerformBitgetApikeyInformation("bg_7c52d3c7de17a4c18d8f1eb835b71158", "f4a466791e9779b55c9f15250f93747290bab56d20ee57963fc15db249638323", "thisisapassphrase")
+	// if err != nil {
+	// 	fmt.Println("--error calling api---", err)
+	// }
+
+	// fmt.Println("---response----", response)
 	databaseConnection.Run(":8080")
 
 }

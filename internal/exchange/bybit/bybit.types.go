@@ -3,15 +3,15 @@ package bybit
 import "time"
 
 type APIKeyInfoResponse struct {
-	RetCode          int         `json:"ret_code"`
-	RetMsg           string      `json:"ret_msg"`
-	Result           interface{} `json:"result"`
-	ExtCode          string      `json:"ext_code"`
-	ExtInfo          string      `json:"ext_info"`
-	TimeNow          string      `json:"time_now"`
-	RateLimitStatus  int         `json:"rate_limit_status"`
-	RateLimit        int         `json:"rate_limit"`
-	RateLimitResetMs int64       `json:"rate_limit_reset_ms"`
+	RetCode          int          `json:"ret_code"`
+	RetMsg           string       `json:"ret_msg"`
+	Result           []APIKeyInfo `json:"result"`
+	ExtCode          string       `json:"ext_code"`
+	ExtInfo          string       `json:"ext_info"`
+	TimeNow          string       `json:"time_now"`
+	RateLimitStatus  int          `json:"rate_limit_status"`
+	RateLimit        int          `json:"rate_limit"`
+	RateLimitResetMs int64        `json:"rate_limit_reset_ms"`
 }
 
 type APIKeyInfo struct {

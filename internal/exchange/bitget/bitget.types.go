@@ -49,3 +49,22 @@ type MarginDataResponse struct {
 	RequestTime int64        `json:"requestTime"`
 	Data        []MarginData `json:"data"`
 }
+
+type ApiKeyResponse struct {
+	Code        string `json:"code"`
+	Msg         string `json:"msg"`
+	RequestTime int64  `json:"requestTime"`
+	Data        User   `json:"data"`
+}
+
+type User struct {
+	UserId           string   `json:"user_id"`
+	InviterId        string   `json:"inviter_id"`
+	AgentInviterCode string   `json:"agent_inviter_code"`
+	Channel          string   `json:"channel"`
+	Ips              string   `json:"ips"`
+	Authorities      []string `json:"authorities"`
+	ParentId         int64    `json:"parentId"`
+	Trader           bool     `json:"trader"`
+	IsSpotTrader     bool     `json:"isSpotTrader"`
+}

@@ -124,3 +124,22 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 
 	return formattedPositions
 }
+
+func HasRequiredPermissions(permissions []string) bool {
+	requiredStrings := []string{"Order", "Position", "ExchangeHistory"}
+
+	for _, str := range requiredStrings {
+		found := false
+		for _, permission := range permissions {
+			if permission == str {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+
+	return true
+}
