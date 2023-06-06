@@ -10,10 +10,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 
-	//log "github.com/sirupsen/logrus"
-
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
-	"github.com/kryptomind/bidboxapi/KeyService/models"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
+
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
 
@@ -80,7 +79,7 @@ func (server *Server) GetKeys(w http.ResponseWriter, r *http.Request) {
 
 func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 
-	kid := mux.Vars(r)["id"] //grab the id
+	kid := mux.Vars(r)["id"]
 	new_kid, err := uuid.Parse(kid)
 	if err != nil {
 		response.ERROR(w, http.StatusBadRequest, errors.New("invalid key id"))

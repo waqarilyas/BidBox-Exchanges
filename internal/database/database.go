@@ -9,7 +9,8 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/kryptomind/bidboxapi/KeyService/internal/api"
-	"github.com/kryptomind/bidboxapi/KeyService/models"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -36,6 +37,7 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 	}
 
 	server.Router = routeModule.Router
+	routeModule.DB = server.DB
 	routeModule.InitializeRoutes()
 }
 

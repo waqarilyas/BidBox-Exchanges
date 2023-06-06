@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/kryptomind/bidboxapi/KeyService/internal/shared"
 )
 
 const (
@@ -44,7 +46,6 @@ func GetBybitApiKeyInfo(apiKey, secret string) (*APIKeyInfoResponse, error) {
 
 func GetBybitAccountDetails(apiKey string, secret string) (*AccountInfo, error) {
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
-
 	accSignature := GenerateBybitSignature(apiKey, secret, 50000, timestamp, "")
 
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/v5/account/info", BybitAPIEndpoint), nil)
@@ -83,15 +84,17 @@ func GetBybitAccountDetails(apiKey string, secret string) (*AccountInfo, error) 
 
 }
 
-func GetBybitAccountBalance(apiKey string, secret string) (*AccountBalanceSuccessResponse, error) {
+func GetBybitAccountBalance(apiKey string, secret string) (*shared.AccountData, error) {
 	accountDetails, accountDetailsError := GetBybitAccountDetails(apiKey, secret)
 	if accountDetailsError != nil {
 		return nil, accountDetailsError
 	}
 
 	accountType := "UNIFIED"
+	IS_UNIFIED := true
 	if accountDetails.Result.UnifiedMarginStatus == 1 {
 		accountType = "CONTRACT"
+		IS_UNIFIED = false
 	}
 
 	queryString := "accountType=" + accountType
@@ -132,17 +135,24 @@ func GetBybitAccountBalance(apiKey string, secret string) (*AccountBalanceSucces
 		return nil, errors.New(errorResponse.RetMsg)
 	}
 
-	var response AccountBalanceSuccessResponse
+	var response AccountBalanceResponse
 	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return nil, err
 	}
 
-	return &response, nil
+	var accountData shared.AccountData
+
+	if IS_UNIFIED {
+		accountData = TransformUnifiedAccountBalance(response)
+	} else {
+		accountData = TransformContractAccountBalance(response)
+	}
+
+	return &accountData, nil
 }
 
 func GetBybitAccountPositions(apiKey string, secret string) (*PositionsResponse, error) {
-
 	queryString := "settleCoin=USDT&category=linear"
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
 	accSignature := GenerateBybitSignature(apiKey, secret, 50000, timestamp, queryString)

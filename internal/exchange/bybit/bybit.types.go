@@ -59,6 +59,14 @@ type AccountBalanceSuccessResponse struct {
 	Time       int64                  `json:"time"`
 }
 
+type AccountBalanceResponse struct {
+	RetCode    int                    `json:"retCode"`
+	RetMsg     string                 `json:"retMsg"`
+	Result     ResultData             `json:"result"`
+	RetExtInfo map[string]interface{} `json:"retExtInfo"`
+	Time       int64
+}
+
 type ResultData struct {
 	List []AccountData `json:"list"`
 }
