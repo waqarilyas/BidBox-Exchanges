@@ -24,5 +24,6 @@ type PositionsData struct {
 	HoldMode         string `json:"holdMode"`
 	LiquidationPrice string `json:"liquidationPrice"`
 	MarketPrice      string `json:"marketPrice"`
+	EntryPrice       string `json:"entryPrice"`
 	CreationTime     string `json:"creationTime"`
 }

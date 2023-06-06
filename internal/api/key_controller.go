@@ -10,10 +10,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 
-	//log "github.com/sirupsen/logrus"
-
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
-	"github.com/kryptomind/bidboxapi/KeyService/models"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
+
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
 

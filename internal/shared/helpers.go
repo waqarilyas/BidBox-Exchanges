@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
-	"github.com/kryptomind/bidboxapi/KeyService/models"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
 )
 
 func DecryptUserKeys(keys *models.Key) (*DecryptedKeys, error) {

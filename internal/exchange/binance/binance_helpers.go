@@ -59,3 +59,52 @@ func TransformAccountResponse(accountData AccountsResponse) shared.AccountData {
 	return transformedData
 
 }
+
+func TransformAccountPositionsData(data []Position) []shared.PositionsData {
+
+	var formattedPositions []shared.PositionsData
+
+	for _, position := range data {
+
+		positionAmount, err := strconv.ParseFloat(position.PositionAmt, 64)
+		if err != nil {
+			fmt.Println("Error parsing position amount", err)
+		}
+
+		fmt.Println(position.PositionAmt)
+		if positionAmount > 0 || positionAmount < 0 {
+
+			positionSide := "short"
+			holdMode := "single_hold"
+
+			if positionAmount > 0 {
+				positionSide = "long"
+			}
+
+			if position.PositionSide == "BOTH" {
+				holdMode = "double_hold"
+			}
+
+			updateTime := fmt.Sprintf("%d", position.UpdateTime)
+
+			pos := shared.PositionsData{
+				MarginCoin:       position.Symbol,
+				Symbol:           position.Symbol,
+				HoldSide:         positionSide,
+				Margin:           position.InitialMargin,
+				Available:        position.IsolatedWallet,
+				Total:            position.PositionAmt,
+				MarginMode:       position.MarginType,
+				HoldMode:         holdMode,
+				LiquidationPrice: position.LiquidationPrice,
+				MarketPrice:      position.MarkPrice,
+				EntryPrice:       position.EntryPrice,
+				CreationTime:     updateTime,
+			}
+			formattedPositions = append(formattedPositions, pos)
+		}
+
+	}
+
+	return formattedPositions
+}

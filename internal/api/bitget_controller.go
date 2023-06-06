@@ -7,8 +7,9 @@ import (
 
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	"github.com/kryptomind/bidboxapi/KeyService/internal/exchange/bitget"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
 	"github.com/kryptomind/bidboxapi/KeyService/internal/shared"
-	"github.com/kryptomind/bidboxapi/KeyService/models"
+
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
 

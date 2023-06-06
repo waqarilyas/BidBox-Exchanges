@@ -57,6 +57,9 @@ type Position struct {
 	UpdateTime             int    `json:"updateTime"`
 	BidNotional            string `json:"bidNotional"`
 	AskNotional            string `json:"askNotional"`
+	LiquidationPrice       string `json:"liquidationPrice"`
+	MarkPrice              string `json:"markPrice"`
+	MarginType             string `json:"marginType"`
 }
 
 type Order struct {
