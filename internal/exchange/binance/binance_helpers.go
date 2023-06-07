@@ -71,8 +71,19 @@ func TransformAccountPositionsData(data []Position) []shared.PositionsData {
 			fmt.Println("Error parsing position amount", err)
 		}
 
-		fmt.Println(position.PositionAmt)
 		if positionAmount > 0 || positionAmount < 0 {
+
+			leverage, err := strconv.ParseFloat(position.Leverage, 64)
+			if err != nil {
+				fmt.Println("Error parsing leverage", err)
+			}
+
+			entryPrice, err := strconv.ParseFloat(position.EntryPrice, 64)
+			if err != nil {
+				fmt.Println("Error parsing leverage", err)
+			}
+
+			marginAmount := (positionAmount * entryPrice) / leverage
 
 			positionSide := "short"
 			holdMode := "single_hold"
@@ -86,12 +97,13 @@ func TransformAccountPositionsData(data []Position) []shared.PositionsData {
 			}
 
 			updateTime := fmt.Sprintf("%d", position.UpdateTime)
+			marginAmountStr := strconv.FormatFloat(marginAmount, 'f', -1, 64)
 
 			pos := shared.PositionsData{
 				MarginCoin:       position.Symbol,
 				Symbol:           position.Symbol,
 				HoldSide:         positionSide,
-				Margin:           position.InitialMargin,
+				Margin:           marginAmountStr,
 				Available:        position.IsolatedWallet,
 				Total:            position.PositionAmt,
 				MarginMode:       position.MarginType,
