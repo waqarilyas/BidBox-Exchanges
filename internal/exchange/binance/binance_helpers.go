@@ -100,6 +100,8 @@ func TransformAccountPositionsData(data []Position) []shared.PositionsData {
 				MarketPrice:      position.MarkPrice,
 				EntryPrice:       position.EntryPrice,
 				CreationTime:     updateTime,
+				UnrealizedPL:     position.UnrealizedProfit,
+				Leverage:         position.Leverage,
 			}
 			formattedPositions = append(formattedPositions, pos)
 		}

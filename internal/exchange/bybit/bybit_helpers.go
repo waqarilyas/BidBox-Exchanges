@@ -117,6 +117,8 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 			LiquidationPrice: position.LiqPrice,
 			MarketPrice:      position.MarkPrice,
 			CreationTime:     position.CreatedTime,
+			UnrealizedPL:     position.UnrealisedPnl,
+			Leverage:         position.Leverage,
 		}
 
 		formattedPositions = append(formattedPositions, pos)

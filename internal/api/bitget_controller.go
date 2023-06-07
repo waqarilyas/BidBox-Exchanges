@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
@@ -78,8 +77,6 @@ func (server *Server) GetBitgetOpenPositions(w http.ResponseWriter, r *http.Requ
 	if err != nil {
 		response.ERROR(w, http.StatusInternalServerError, errors.New("failed to decrypt keys"))
 	}
-
-	fmt.Println(trandformedKeys)
 
 	positionsresponse, err := bitget.PerformBitgetPositionQuery(trandformedKeys.ApiKey, trandformedKeys.Secret, trandformedKeys.Passphrase)
 	if err != nil {

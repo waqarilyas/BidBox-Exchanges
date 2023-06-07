@@ -54,7 +54,11 @@ func TransformPositionsResponse(positionsData MarginDataResponse) []shared.Posit
 	positions := positionsData.Data
 	var formattedPositions []shared.PositionsData
 	for _, position := range positions {
+
 		if position.Available != "0" {
+
+			strLeverage := fmt.Sprintf("%v", position.Leverage)
+
 			pos := shared.PositionsData{
 				MarginCoin:       position.MarginCoin,
 				Symbol:           position.Symbol,
@@ -67,6 +71,8 @@ func TransformPositionsResponse(positionsData MarginDataResponse) []shared.Posit
 				LiquidationPrice: position.LiquidationPrice,
 				MarketPrice:      position.MarketPrice,
 				CreationTime:     position.CTime,
+				UnrealizedPL:     position.UnrealizedPL,
+				Leverage:         strLeverage,
 			}
 			formattedPositions = append(formattedPositions, pos)
 		}
