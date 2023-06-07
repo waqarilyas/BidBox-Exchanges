@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"math"
 	"net/url"
 	"strconv"
 	"strings"
@@ -84,6 +85,7 @@ func TransformAccountPositionsData(data []Position) []shared.PositionsData {
 			}
 
 			marginAmount := (positionAmount * entryPrice) / leverage
+			marginAmount = math.Abs(marginAmount)
 
 			positionSide := "short"
 			holdMode := "single_hold"
