@@ -26,4 +26,6 @@ type PositionsData struct {
 	MarketPrice      string `json:"marketPrice"`
 	EntryPrice       string `json:"entryPrice"`
 	CreationTime     string `json:"creationTime"`
+	UnrealizedPL     string `json:"unrealizedPl"`
+	Leverage         string `json:"leverage"`
 }
