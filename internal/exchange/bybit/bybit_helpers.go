@@ -127,6 +127,39 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 	return formattedPositions
 }
 
+
+func TransformAccountClosedResponse(positionData Statment) []shared.ClosedPnlData {
+	positionsList := positionData.Result.List
+
+	var formattedPositions []shared.ClosedPnlData
+
+	for _, position := range positionsList {
+		pos := shared.ClosedPnlData{
+			Symbol: position.Symbol,
+			OrderType: position.OrderType,
+			Leverage: position.Leverage,
+			UpdatedTime: position.UpdatedTime,
+			Side: position.Side,
+			OrderID: position.OrderID,
+			ClosedPnl: position.ClosedPnl,
+			AvgEntryPrice: position.AvgEntryPrice,
+			Quantity: position.Quantity,
+			CumEntryValue: position.CumEntryValue,
+			CreatedTime: position.CreatedTime,
+			OrderPrice: position.OrderPrice,
+			ClosedSize: position.ClosedSize,
+			AvgExitPrice: position.AvgExitPrice,
+			ExecType: position.ExecType,
+			FillCount: position.FillCount,
+			CumExitValue: position.CumExitValue,
+		}
+
+		formattedPositions = append(formattedPositions, pos)
+	}
+
+	return formattedPositions
+}
+
 func HasRequiredPermissions(permissions []string) bool {
 	requiredStrings := []string{"Order", "Position", "ExchangeHistory"}
 

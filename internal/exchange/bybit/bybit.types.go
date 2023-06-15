@@ -144,3 +144,37 @@ type PositionsResponse struct {
 	RetExtInfo struct{} `json:"retExtInfo"`
 	Time       int64    `json:"time"`
 }
+
+type Result struct {
+    NextPageCursor string `json:"nextPageCursor"`
+    Category       string `json:"category"`
+    List           []Trade `json:"list"`
+}
+
+type Trade struct {
+    Symbol         string `json:"symbol"`
+    OrderType      string `json:"orderType"`
+    Leverage       string `json:"leverage"`
+    UpdatedTime    string `json:"updatedTime"`
+    Side           string `json:"side"`
+    OrderID        string `json:"orderId"`
+    ClosedPnl      string `json:"closedPnl"`
+    AvgEntryPrice  string `json:"avgEntryPrice"`
+    Quantity       string `json:"qty"`
+    CumEntryValue  string `json:"cumEntryValue"`
+    CreatedTime    string `json:"createdTime"`
+    OrderPrice     string `json:"orderPrice"`
+    ClosedSize     string `json:"closedSize"`
+    AvgExitPrice   string `json:"avgExitPrice"`
+    ExecType       string `json:"execType"`
+    FillCount      string `json:"fillCount"`
+    CumExitValue   string `json:"cumExitValue"`
+}
+
+type Statment struct {
+    RetCode    int    `json:"retCode"`
+    RetMsg     string `json:"retMsg"`
+    Result     Result `json:"result"`
+    RetExtInfo struct{} `json:"retExtInfo"`
+    Time       int64  `json:"time"`
+}
