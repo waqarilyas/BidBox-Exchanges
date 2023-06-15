@@ -29,3 +29,23 @@ type PositionsData struct {
 	UnrealizedPL     string `json:"unrealizedPl"`
 	Leverage         string `json:"leverage"`
 }
+
+type ClosedPnlData struct {
+    Symbol         string `json:"symbol"`
+    OrderType      string `json:"orderType"`
+    Leverage       string `json:"leverage"`
+    UpdatedTime    string `json:"updatedTime"`
+    Side           string `json:"side"`
+    OrderID        string `json:"orderId"`
+    ClosedPnl      string `json:"closedPnl"`
+    AvgEntryPrice  string `json:"avgEntryPrice"`
+    Quantity       string `json:"qty"`
+    CumEntryValue  string `json:"cumEntryValue"`
+    CreatedTime    string `json:"createdTime"`
+    OrderPrice     string `json:"orderPrice"`
+    ClosedSize     string `json:"closedSize"`
+    AvgExitPrice   string `json:"avgExitPrice"`
+    ExecType       string `json:"execType"`
+    FillCount      string `json:"fillCount"`
+    CumExitValue   string `json:"cumExitValue"`
+}
