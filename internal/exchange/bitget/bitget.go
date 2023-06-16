@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
+	"time"
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	// "github.com/kryptomind/bidboxapi/AccountsService/api/helpers"
 )
@@ -128,6 +128,48 @@ func PerformBitgetPositionQuery(apiKey, apiSecret, passphrase string) (*MarginDa
 	}
 
 	var accountData MarginDataResponse
+
+	err = json.Unmarshal(body, &accountData)
+	if err != nil {
+		return nil, err
+	}
+
+	return &accountData, nil
+}
+
+func GetOrderHistory(apiKey, apiSecret, passphrase string) (*OrderHistory, error) {
+	expires := helpers.GetBitgetServerTimeStamp()
+	currentTimeMillis := time.Now().UnixNano() / int64(time.Millisecond)
+	currentTimeStr := fmt.Sprintf("%d", currentTimeMillis)
+	uri := fmt.Sprintf("/api/mix/v1/order/historyProductType?productType=sumcbl&startTime=1609441200000&endTime=%s&pageSize=100",currentTimeStr)
+	signature := GenerateBitgetSignature(apiSecret, "GET", uri, expires)
+
+	url := fmt.Sprintf("https://api.bitget.com%s", uri)
+	method := "GET"
+
+	req, err := http.NewRequest(method, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("ACCESS-KEY", apiKey)
+	req.Header.Add("ACCESS-PASSPHRASE", passphrase)
+	req.Header.Add("ACCESS-TIMESTAMP", expires)
+	req.Header.Add("ACCESS-SIGN", signature)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+
+		return nil, err
+	}
+
+	var accountData OrderHistory
 
 	err = json.Unmarshal(body, &accountData)
 	if err != nil {

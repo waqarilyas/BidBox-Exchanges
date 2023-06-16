@@ -80,3 +80,37 @@ func TransformPositionsResponse(positionsData MarginDataResponse) []shared.Posit
 	return formattedPositions
 
 }
+
+func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHistoryResponse {
+	positionsList := positionData.Data.List
+
+	var formattedPositions []shared.OrderHistoryResponse
+
+	for _, position := range positionsList {
+		price := strconv.FormatFloat(position.Price, 'f', -1, 64)
+		// priceAvg := strconv.FormatFloat(position.PriceAvg, 'f', -1, 64)
+		qty := strconv.FormatFloat(position.FilledQty, 'f', -1, 64)
+		// cTime := strconv.FormatInt(position.CTime, 10)
+		fee := strconv.FormatFloat(position.Fee, 'f', -1, 64)
+		pos := shared.OrderHistoryResponse{
+			Symbol: position.Symbol,
+			OrderID: position.OrderID,
+			Price: price,
+			Qty: qty,
+			OrderStatus: position.State,
+			AvgPrice: "0",
+			CumExecQty: "0",
+			CumExecValue: "0",
+			CumExecFee: fee,
+			OrderType: position.OrderType,
+			StopOrderType: "UNKNOWN",
+			// OrderIv: position.OrderIv,
+			CreatedTime: "0",
+			UpdatedTime: "0",
+		}
+
+		formattedPositions = append(formattedPositions, pos)
+	}
+
+	return formattedPositions
+}

@@ -68,3 +68,79 @@ type User struct {
 	Trader           bool     `json:"trader"`
 	IsSpotTrader     bool     `json:"isSpotTrader"`
 }
+
+// type OrderHistory struct {
+// 	Code        string `json:"code"`
+// 	Msg         string `json:"msg"`
+// 	RequestTime int64  `json:"requestTime"`
+// 	Data        Data   `json:"data"`
+// }
+
+// type Data struct {
+// 	NextFlag bool       `json:"nextFlag"`
+// 	EndID    string     `json:"endId"`
+// 	List []OrderItem `json:"orderList"`
+// }
+
+// type OrderItem struct {
+// 	Symbol         string  `json:"symbol"`
+// 	Size           int     `json:"size"`
+// 	OrderID        string  `json:"orderId"`
+// 	ClientOID      string  `json:"clientOid"`
+// 	FilledQty      int     `json:"filledQty"`
+// 	Fee            float64 `json:"fee"`
+// 	Price          float64 `json:"price"`
+// 	PriceAvg       float64 `json:"priceAvg"`
+// 	State          string  `json:"state"`
+// 	Side           string  `json:"side"`
+// 	TimeInForce    string  `json:"timeInForce"`
+// 	TotalProfits   float64 `json:"totalProfits"`
+// 	PosSide        string  `json:"posSide"`
+// 	MarginCoin     string  `json:"marginCoin"`
+// 	FilledAmount   float64 `json:"filledAmount"`
+// 	OrderType      string  `json:"orderType"`
+// 	Leverage       string  `json:"leverage"`
+// 	MarginMode     string  `json:"marginMode"`
+// 	ReduceOnly     bool    `json:"reduceOnly"`
+// 	EnterPointSource string `json:"enterPointSource"`
+// 	TradeSide      string  `json:"tradeSide"`
+// 	HoldMode       string  `json:"holdMode"`
+// 	OrderSource    string  `json:"orderSource"`
+// 	CTime          string  `json:"cTime"`
+// 	UTime          string  `json:"uTime"`
+// }
+
+type OrderHistory struct {
+	Code string `json:"code"`
+	Data struct {
+		NextFlag  bool         `json:"nextFlag"`
+		EndID     string       `json:"endId"`
+		List []OrderItem `json:"orderList"`
+	} `json:"data"`
+	Msg string `json:"msg"`
+}
+
+type OrderItem struct {
+	Symbol            string  `json:"symbol"`
+	Size              float64     `json:"size"`
+	OrderID           string  `json:"orderId"`
+	ClientOID         string  `json:"clientOid"`
+	FilledQty         float64     `json:"filledQty"`
+	Fee               float64 `json:"fee"`
+	Price             float64 `json:"price"`
+	State             string  `json:"state"`
+	Side              string  `json:"side"`
+	TimeInForce       string  `json:"timeInForce"`
+	TotalProfits      float64 `json:"totalProfits"`
+	PosSide           string  `json:"posSide"`
+	MarginCoin        string  `json:"marginCoin"`
+	Leverage          string  `json:"leverage"`
+	MarginMode        string  `json:"marginMode"`
+	OrderType         string  `json:"orderType"`
+	ReduceOnly        bool    `json:"reduceOnly"`
+	EnterPointSource  string  `json:"enterPointSource"`
+	TradeSide         string  `json:"tradeSide"`
+	HoldMode          string  `json:"holdMode"`
+	OrderSource       string  `json:"orderSource"`
+	// CTime             int64   `json:"ctime"`
+}

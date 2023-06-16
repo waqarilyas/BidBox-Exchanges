@@ -127,6 +127,34 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 	return formattedPositions
 }
 
+func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHistoryResponse {
+	positionsList := positionData.Result.List
+
+	var formattedPositions []shared.OrderHistoryResponse
+
+	for _, position := range positionsList {
+		pos := shared.OrderHistoryResponse{
+			Symbol: position.Symbol,
+			OrderID: position.OrderID,
+			Price: position.Price,
+			Qty: position.Qty,
+			OrderStatus: position.OrderStatus,
+			// CancelType: position.CancelType,
+			AvgPrice: position.AvgPrice,
+			CumExecQty: position.CumExecQty,
+			CumExecValue: position.CumExecValue,
+			CumExecFee: position.CumExecFee,
+			OrderType: position.OrderType,
+			StopOrderType: position.StopOrderType,
+			CreatedTime: position.CreatedTime,
+			UpdatedTime: position.UpdatedTime,
+		}
+
+		formattedPositions = append(formattedPositions, pos)
+	}
+
+	return formattedPositions
+}
 
 func TransformAccountClosedResponse(positionData Statment) []shared.ClosedPnlData {
 	positionsList := positionData.Result.List
