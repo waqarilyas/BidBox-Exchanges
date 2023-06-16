@@ -1,16 +1,13 @@
 package models
 
 import (
-	"context"
 	"errors"
-	"fmt"
 	"html"
 	"strings"
 
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	//	log "github.com/sirupsen/logrus"
 
-	"github.com/adshao/go-binance/v2"
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
@@ -18,11 +15,12 @@ import (
 
 type Key struct {
 	Keyid      uuid.UUID `gorm:"primary_key;type:uuid;default:gen_random_uuid()" json:"key_id"`
-	Uid        string    `gorm:"size:255" json:"uid"`
+	Uid        string    `gorm:"null;size:255" json:"uid"`
 	Service    string    `gorm:"size:255;not null" json:"service"`
 	ApiKey     string    `gorm:"not null;unique" json:"api_key"`
 	SecretKey  string    `gorm:"not null;unique" json:"secret_key"`
 	Passphrase string    `gorm:"" json:"passphrase"`
+	UserEmail  string    `gorm:"" json:"user_email"`
 }
 
 func Hash(password string) ([]byte, error) {
@@ -70,9 +68,6 @@ var services = []string{
 
 func (u *Key) Validate() error {
 
-	if u.Service != "bitget" {
-		return errors.New("invalid service. Only bitget is supported yet")
-	}
 	if u.Service == "bitget" && u.Passphrase == "" {
 		return errors.New("passphrase is required")
 	}
@@ -85,26 +80,26 @@ func (u *Key) Validate() error {
 	if u.ApiKey == "" {
 		return errors.New("api_key required")
 	}
-	if u.Uid == "" {
-		return errors.New("uid is required required")
+	if u.UserEmail == "" {
+		return errors.New("user_email is required")
 	}
 
-	found := false
-	for _, v := range services {
-		if strings.ToLower(u.Service) == v {
-			found = true
-			fmt.Println(found)
-			break
-		}
-	}
-	/*if !found {
-		return errors.New("service not found")
-	}*/
-	client := binance.NewClient(u.ApiKey, u.SecretKey)
-	_, err := client.NewListPricesService().Do(context.Background())
-	if err != nil {
-		return err
-	}
+	// found := false
+	// for _, v := range services {
+	// 	if strings.ToLower(u.Service) == v {
+	// 		found = true
+	// 		fmt.Println(found)
+	// 		break
+	// 	}
+	// }
+	// if !found {
+	// 	return errors.New("service not found")
+	// }
+	// client := binance.NewClient(u.ApiKey, u.SecretKey)
+	// _, err := client.NewListPricesService().Do(context.Background())
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }
 
@@ -128,6 +123,14 @@ func (u *Key) FindAllKeys(db *gorm.DB) (*[]Key, error) {
 		return &[]Key{}, err
 	}
 	return &Keys, nil
+}
+
+func (u *Key) FindKeyByEmailAndService(db *gorm.DB, service string, email string) (*Key, error) {
+	err := db.Debug().Model(Key{}).Where("service = ? AND user_email= ?", service, email).Take(&u).Error
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 func (u *Key) FindKeyById(db *gorm.DB, kid uuid.UUID) (*Key, error) {
