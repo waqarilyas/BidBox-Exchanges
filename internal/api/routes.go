@@ -34,5 +34,5 @@ func (r *Server) InitializeRoutes() {
 	// Binance Routes
 	s.HandleFunc("/binance/account", middleware.MiddlewareJSON(r.GetBinanceAccountDetailsData)).Methods("GET")
 	s.HandleFunc("/binance/positions", middleware.MiddlewareJSON(r.GetBinanceAccountPositionsData)).Methods("GET")
-
+	s.HandleFunc("/binance/orderHistory", middleware.MiddlewareJSON(r.GetBinanceOrderHistory)).Methods("GET")
 }
