@@ -1,4 +1,4 @@
-package api
+package controllers
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
+	"github.com/kryptomind/bidboxapi/KeyService/models"
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
 
