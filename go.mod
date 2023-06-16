@@ -10,11 +10,14 @@ require (
 )
 
 require (
+	github.com/bitly/go-simplejson v0.5.0 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/lib/pq v1.1.1 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 )
 
 require (
+	github.com/adshao/go-binance/v2 v2.4.2
 	github.com/gorilla/mux v1.8.0
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/joho/godotenv v1.5.1
