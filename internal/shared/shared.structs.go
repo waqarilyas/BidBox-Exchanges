@@ -49,3 +49,22 @@ type ClosedPnlData struct {
     FillCount      string `json:"fillCount"`
     CumExitValue   string `json:"cumExitValue"`
 }
+
+type OrderHistoryResponse struct {
+	OrderID           string  `json:"orderId"`
+	Symbol            string  `json:"symbol"`
+	Price             string  `json:"price"`
+	Qty               string  `json:"qty"`
+	Side              string  `json:"side"`
+	OrderStatus       string  `json:"orderStatus"`
+	// CancelType        string  `json:"cancelType"`
+	AvgPrice          string  `json:"avgPrice"`
+	CumExecQty        string  `json:"cumExecQty"`
+	CumExecValue      string  `json:"cumExecValue"`
+	CumExecFee        string  `json:"cumExecFee"`
+	OrderType         string  `json:"orderType"`
+	StopOrderType     string  `json:"stopOrderType"`
+	// OrderIv           string  `json:"orderIv"`
+	CreatedTime       string  `json:"createdTime"`
+	UpdatedTime       string  `json:"updatedTime"`
+}

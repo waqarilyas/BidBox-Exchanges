@@ -178,3 +178,62 @@ type Statment struct {
     RetExtInfo struct{} `json:"retExtInfo"`
     Time       int64  `json:"time"`
 }
+
+
+type OrderHistory struct {
+	RetCode  int    `json:"retCode"`
+	RetMsg   string `json:"retMsg"`
+	Result   OrderResult `json:"result"`
+	RetExtInfo  map[string]interface{} `json:"retExtInfo"`
+	Time     int64  `json:"time"`
+}
+
+type OrderResult struct {
+	List           []Order `json:"list"`
+	NextPageCursor string  `json:"nextPageCursor"`
+	Category       string  `json:"category"`
+}
+
+type Order struct {
+	OrderID           string  `json:"orderId"`
+	OrderLinkID       string  `json:"orderLinkId"`
+	BlockTradeID      string  `json:"blockTradeId"`
+	Symbol            string  `json:"symbol"`
+	Price             string  `json:"price"`
+	Qty               string  `json:"qty"`
+	Side              string  `json:"side"`
+	IsLeverage        string  `json:"isLeverage"`
+	PositionIdx       int     `json:"positionIdx"`
+	OrderStatus       string  `json:"orderStatus"`
+	CancelType        string  `json:"cancelType"`
+	RejectReason      string  `json:"rejectReason"`
+	AvgPrice          string  `json:"avgPrice"`
+	LeavesQty         string  `json:"leavesQty"`
+	LeavesValue       string  `json:"leavesValue"`
+	CumExecQty        string  `json:"cumExecQty"`
+	CumExecValue      string  `json:"cumExecValue"`
+	CumExecFee        string  `json:"cumExecFee"`
+	TimeInForce       string  `json:"timeInForce"`
+	OrderType         string  `json:"orderType"`
+	StopOrderType     string  `json:"stopOrderType"`
+	OrderIv           string  `json:"orderIv"`
+	TriggerPrice      string  `json:"triggerPrice"`
+	TakeProfit        string  `json:"takeProfit"`
+	StopLoss          string  `json:"stopLoss"`
+	TpTriggerBy       string  `json:"tpTriggerBy"`
+	SlTriggerBy       string  `json:"slTriggerBy"`
+	TriggerDirection  int     `json:"triggerDirection"`
+	TriggerBy         string  `json:"triggerBy"`
+	LastPriceOnCreated string `json:"lastPriceOnCreated"`
+	ReduceOnly        bool    `json:"reduceOnly"`
+	CloseOnTrigger    bool    `json:"closeOnTrigger"`
+	SmpType           string  `json:"smpType"`
+	SmpGroup          int     `json:"smpGroup"`
+	SmpOrderID        string  `json:"smpOrderId"`
+	TpSlMode          string  `json:"tpslMode"`
+	TpLimitPrice      string  `json:"tpLimitPrice"`
+	SlLimitPrice      string  `json:"slLimitPrice"`
+	PlaceType         string  `json:"placeType"`
+	CreatedTime       string  `json:"createdTime"`
+	UpdatedTime       string  `json:"updatedTime"`
+}
