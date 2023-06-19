@@ -113,13 +113,25 @@ func (server *Server) GetBinanceOrderHistory(w http.ResponseWriter, r *http.Requ
 		} else {
 			side = "short"
 		}
+		state := "Unknown start"
+		if v.Status == "NEW"{
+			state = "New"
+		}else if v.Status == "PARTIALLY_FILLED"{
+			state = "PartiallyFilled"
+		}else if v.Status == "FILLED"{
+			state = "Filled"
+		}else if v.Status == "CANCELED"{
+			state = "Canceled"
+		}else {
+			state = "Unknown"
+		}
 		ns := shared.OrderHistoryResponse{
 			Symbol:        v.Symbol,
 			OrderID:       fmt.Sprintf("%d", v.OrderID),
 			Price:         v.Price,
 			Qty:           v.CumQuote,
 			Side:          side,
-			OrderStatus:   string(v.Status),
+			OrderStatus:   state,
 			CreatedTime:   fmt.Sprintf("%d", v.Time),
 			UpdatedTime:   fmt.Sprintf("%d", v.UpdateTime),
 			StopOrderType: "UNKNOWN",
