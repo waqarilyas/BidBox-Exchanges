@@ -115,3 +115,49 @@ func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 	}
 	response.JSON(w, http.StatusOK, KeyGotten)
 }
+
+type updateLeverageRequest struct {
+	Emails []string `json:"emails"`
+	symbol string `json:"symbol"`
+	buyLeverage int `json:"buyLeverage"`
+
+}
+// type updateLeverage struct {
+// 	Category     string `json:"category"`
+// 	Symbol       string `json:"symbol"`
+// 	BuyLeverage  string `json:"buyLeverage"`
+// 	SellLeverage string `json:"sellLeverage"`
+// }
+
+func (server *Server) updateLeverage(w http.ResponseWriter, r *http.Request) {
+		var req updateLeverageRequest
+		err := json.NewDecoder(r.Body).Decode(&req)
+		if err != nil {
+			http.Error(w, "Failed to parse request body", http.StatusBadRequest)
+			return
+		}
+	
+		// Loop through the emails and print them
+		for _, email := range req.Emails {
+			fmt.Println(email)
+			key := models.Key{}
+			keys, err := key.FindKeyByEmail(server.DB, email)
+			if err != nil {
+				response.ERROR(w, http.StatusBadRequest, err)
+			}
+			for _, currentkey := range keys {
+				fmt.Println(currentkey)
+				if currentkey.Service == "bybit" {
+					leverage := models.UpdateLeverage{}
+					leverage.Category = "linear"
+					leverage.Symbol = req.symbol
+					leverage.BuyLeverage = string(req.buyLeverage)
+					leverage.SellLeverage = string(req.buyLeverage)
+					// bybit.UpdatebybitLeverage(currentkey.ApiKey, currentkey.SecretKey, leverage)
+
+			}
+			
+		}
+		
+		}
+}

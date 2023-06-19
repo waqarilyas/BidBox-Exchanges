@@ -68,3 +68,4 @@ type OrderHistoryResponse struct {
 	CreatedTime       string  `json:"createdTime"`
 	UpdatedTime       string  `json:"updatedTime"`
 }
+
