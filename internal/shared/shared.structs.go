@@ -57,6 +57,7 @@ type OrderHistoryResponse struct {
 	Qty               string  `json:"qty"`
 	Side              string  `json:"side"`
 	OrderStatus       string  `json:"orderStatus"`
+	Profit 		  	  float64  `json:"profit"`
 	// CancelType        string  `json:"cancelType"`
 	AvgPrice          string  `json:"avgPrice"`
 	CumExecQty        string  `json:"cumExecQty"`

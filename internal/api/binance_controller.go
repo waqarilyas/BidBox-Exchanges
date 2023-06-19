@@ -121,7 +121,7 @@ func (server *Server) GetBinanceOrderHistory(w http.ResponseWriter, r *http.Requ
 		}else if v.Status == "FILLED"{
 			state = "Filled"
 		}else if v.Status == "CANCELED"{
-			state = "Canceled"
+			state = "Cancelled"
 		}else {
 			state = "Unknown"
 		}
@@ -131,6 +131,7 @@ func (server *Server) GetBinanceOrderHistory(w http.ResponseWriter, r *http.Requ
 			Price:         v.Price,
 			Qty:           v.CumQuote,
 			Side:          side,
+			Profit: 	   0.00,
 			OrderStatus:   state,
 			CreatedTime:   fmt.Sprintf("%d", v.Time),
 			UpdatedTime:   fmt.Sprintf("%d", v.UpdateTime),
