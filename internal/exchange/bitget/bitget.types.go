@@ -142,5 +142,6 @@ type OrderItem struct {
 	TradeSide         string  `json:"tradeSide"`
 	HoldMode          string  `json:"holdMode"`
 	OrderSource       string  `json:"orderSource"`
-	// CTime             int64   `json:"ctime"`
+	CTime             string   `json:"ctime"`
+	UTime             string   `json:"utime"`
 }
