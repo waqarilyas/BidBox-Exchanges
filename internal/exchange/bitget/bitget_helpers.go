@@ -92,12 +92,27 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 		qty := strconv.FormatFloat(position.FilledQty, 'f', -1, 64)
 		// cTime := strconv.FormatInt(position.CTime, 10)
 		fee := strconv.FormatFloat(position.Fee, 'f', -1, 64)
+		state := "position.State"
+		if position.State == "init"{
+			state = "Created"
+		}else if position.State == "new"{
+			state = "New"
+		}else if position.State == "partially_filled"{
+			state = "PartiallyFilled"
+		}else if position.State == "filled"{
+			state = "Filled"
+		}else if position.State == "canceled"{
+			state = "Canceled"
+		}else {
+			state = "Unknown"
+		}
 		pos := shared.OrderHistoryResponse{
 			Symbol: position.Symbol,
 			OrderID: position.OrderID,
+			Side: position.Side,
 			Price: price,
 			Qty: qty,
-			OrderStatus: position.State,
+			OrderStatus: state,
 			AvgPrice: "0",
 			CumExecQty: "0",
 			CumExecValue: "0",
