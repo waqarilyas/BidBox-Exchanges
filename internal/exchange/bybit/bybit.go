@@ -1,6 +1,7 @@
 package bybit
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -8,7 +9,8 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-	// "github.com/kryptomind/bidboxapi/KeyService/internal/models"
+
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
 	"github.com/kryptomind/bidboxapi/KeyService/internal/shared"
 )
 
@@ -248,7 +250,6 @@ func GetBybitCloseProfit_Loss(apiKey string, secret string) (*Statment, error) {
 	return &response, nil
 }
 
-
 func GetOrderHistory(apiKey string, secret string) (*OrderHistory, error) {
 	queryString := "category=linear"
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
@@ -297,50 +298,48 @@ func GetOrderHistory(apiKey string, secret string) (*OrderHistory, error) {
 	return &response, nil
 }
 
-// func UpdatebybitLeverage(apiKey string, secret string, leverage model.UpdatebybitLeverage) (*PositionsResponse, error) {
-// 	queryString := "settleCoin=USDT&category=linear"
-// 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
-// 	accSignature := GenerateBybitSignature(apiKey, secret, 50000, timestamp, queryString)
-// 	finalURL := BybitAPIEndpoint + "/v5/position/set-leverage?" + queryString
+func UpdatebybitLeverage(apiKey string, secret string, leverage *models.UpdateLeverage) ( error) {
+	queryString := "settleCoin=USDT&category=linear"
+	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
+	jsonVal, err := json.Marshal(leverage)
+	if err != nil {
+		return nil
+	}
+	accSignature := GenerateBybitSignature(apiKey, secret, 50000, timestamp, string(jsonVal))
+	finalURL := BybitAPIEndpoint + "/v5/position/set-leverage?" + queryString
 
-// 	req, err := http.NewRequest("GET", finalURL, nil)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	req, err := http.NewRequest("POST", finalURL, bytes.NewBuffer(jsonVal))
+	if err != nil {
+		return err
+	}
 
-// 	req.Header.Set("X-BAPI-SIGN-TYPE", "2")
-// 	req.Header.Set("X-BAPI-SIGN", accSignature)
-// 	req.Header.Set("X-BAPI-API-KEY", apiKey)
-// 	req.Header.Set("X-BAPI-TIMESTAMP", strconv.FormatInt(timestamp, 10))
-// 	req.Header.Set("X-BAPI-RECV-WINDOW", "50000")
-// 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-BAPI-SIGN-TYPE", "2")
+	req.Header.Set("X-BAPI-SIGN", accSignature)
+	req.Header.Set("X-BAPI-API-KEY", apiKey)
+	req.Header.Set("X-BAPI-TIMESTAMP", strconv.FormatInt(timestamp, 10))
+	req.Header.Set("X-BAPI-RECV-WINDOW", "50000")
+	req.Header.Set("Content-Type", "application/json")
 
-// 	client := &http.Client{}
-// 	resp, err := client.Do(req)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer resp.Body.Close()
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
 
-// 	body, err := ioutil.ReadAll(resp.Body)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		err = json.Unmarshal(body, &errorResponse)
+		if err != nil {
+			return err
+		}
+		
+	}
+	return nil
 
-// 	if resp.StatusCode != http.StatusOK {
-// 		var errorResponse ErrorResponse
-// 		err = json.Unmarshal(body, &errorResponse)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		return nil, errors.New(errorResponse.RetMsg)
-// 	}
-
-// 	var response PositionsResponse
-// 	err = json.Unmarshal(body, &response)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return &response, nil
-// }
+}

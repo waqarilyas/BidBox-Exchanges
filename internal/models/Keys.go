@@ -18,6 +18,16 @@ type UpdateLeverage struct {
 	BuyLeverage  string `json:"buyLeverage"`
 	SellLeverage string `json:"sellLeverage"`
 }
+type UpdateLeverageBitget struct {
+	Symbol       string `json:"symbol"`
+	MarginCoin   string `json:"marginCoin"`
+	Leverage     string `json:"leverage"`
+}
+type UpdateLeverageBinance struct {
+	Symbol       string `json:"symbol"`
+	Timestamp    int64 `json:"timestamp"`
+	Leverage     int `json:"leverage"`
+}
 type Key struct {
 	Keyid      uuid.UUID `gorm:"primary_key;type:uuid;default:gen_random_uuid()" json:"key_id"`
 	Uid        string    `gorm:"null;size:255" json:"uid"`

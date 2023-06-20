@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"bytes"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
 )
 
 const (
@@ -156,4 +158,50 @@ func GetBinanceAccountOrderHistory(apiKey string, secret string) (*[]Order, erro
 	}
 
 	return &orders, nil
+}
+
+
+func UpdateBinanceLeverage(apiKey string, secret string, leverage *models.UpdateLeverageBinance) (error) {
+	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
+
+	params := map[string]string{
+		"timestamp": strconv.FormatInt(timestamp, 10),
+	}
+	leverage.Timestamp = timestamp
+	jsonVal, err := json.Marshal(leverage)
+	if err != nil {
+		return nil
+	}
+	accSignature := GenerateBinanceSignature(params, secret)
+	finalURL := BinanceAPIEndpoint + "/fapi/v1/leverage" + strconv.FormatInt(timestamp, 10) + "&signature=" + accSignature
+
+	req, err := http.NewRequest("POST", finalURL, bytes.NewBuffer(jsonVal))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("X-MBX-APIKEY", apiKey)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse BinanceErrorResponse
+		err = json.Unmarshal(body, &errorResponse)
+		if err != nil {
+			return err
+		}
+		return errors.New(errorResponse.Msg)
+	}
+
+	return nil
 }
