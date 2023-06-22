@@ -51,18 +51,21 @@ type ClosedPnlData struct {
 }
 
 type OrderHistoryResponse struct {
-	OrderID       string `json:"orderId"`
-	Symbol        string `json:"symbol"`
-	Price         string `json:"price"`
-	Qty           string `json:"qty"`
-	Side          string `json:"side"`
-	OrderStatus   string `json:"orderStatus"`
+	OrderID     string  `json:"orderId"`
+	Symbol      string  `json:"symbol"`
+	Price       string  `json:"price"`
+	Qty         string  `json:"qty"`
+	Side        string  `json:"side"`
+	OrderStatus string  `json:"orderStatus"`
+	Profit      float64 `json:"profit"`
+	// CancelType        string  `json:"cancelType"`
 	AvgPrice      string `json:"avgPrice"`
 	CumExecQty    string `json:"cumExecQty"`
 	CumExecValue  string `json:"cumExecValue"`
 	CumExecFee    string `json:"cumExecFee"`
 	OrderType     string `json:"orderType"`
 	StopOrderType string `json:"stopOrderType"`
-	CreatedTime   string `json:"createdTime"`
-	UpdatedTime   string `json:"updatedTime"`
+	// OrderIv           string  `json:"orderIv"`
+	CreatedTime string `json:"createdTime"`
+	UpdatedTime string `json:"updatedTime"`
 }

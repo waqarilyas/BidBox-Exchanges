@@ -92,6 +92,7 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 		qty := strconv.FormatFloat(position.FilledQty, 'f', -1, 64)
 		// cTime := strconv.FormatInt(position.CTime, 10)
 		fee := strconv.FormatFloat(position.Fee, 'f', -1, 64)
+		// createdTime := strconv.FormatInt(position.CTime, 10)
 		state := "position.State"
 		if position.State == "init"{
 			state = "Created"
@@ -102,7 +103,7 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 		}else if position.State == "filled"{
 			state = "Filled"
 		}else if position.State == "canceled"{
-			state = "Canceled"
+			state = "Cancelled"
 		}else {
 			state = "Unknown"
 		}
@@ -111,6 +112,7 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 			OrderID: position.OrderID,
 			Side: position.Side,
 			Price: price,
+			Profit: position.TotalProfits,
 			Qty: qty,
 			OrderStatus: state,
 			AvgPrice: "0",
@@ -120,8 +122,8 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 			OrderType: position.OrderType,
 			StopOrderType: "UNKNOWN",
 			// OrderIv: position.OrderIv,
-			CreatedTime: "0",
-			UpdatedTime: "0",
+			CreatedTime: position.CTime,
+			UpdatedTime: position.UTime,
 		}
 
 		formattedPositions = append(formattedPositions, pos)

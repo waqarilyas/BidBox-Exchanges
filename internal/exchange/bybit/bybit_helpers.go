@@ -140,6 +140,7 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 			Qty:         position.Qty,
 			OrderStatus: position.OrderStatus,
 			Side:        position.Side,
+			Profit:      0.00,
 			// CancelType: position.CancelType,
 			AvgPrice:      position.AvgPrice,
 			CumExecQty:    position.CumExecQty,

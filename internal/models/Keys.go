@@ -12,7 +12,12 @@ import (
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
-
+type UpdateLeverage struct {
+	Category     string `json:"category"`
+	Symbol       string `json:"symbol"`
+	BuyLeverage  string `json:"buyLeverage"`
+	SellLeverage string `json:"sellLeverage"`
+}
 type Key struct {
 	Keyid      uuid.UUID `gorm:"primary_key;type:uuid;default:gen_random_uuid()" json:"key_id"`
 	Uid        string    `gorm:"null;size:255" json:"uid"`
@@ -142,4 +147,13 @@ func (u *Key) FindKeyById(db *gorm.DB, kid uuid.UUID) (*Key, error) {
 		return &Key{}, errors.New("Key not found")
 	}
 	return u, nil
+}
+
+func (u *Key) FindKeyByEmail(db *gorm.DB, email string) ([]Key, error) {
+	Keys := []Key{}
+	err := db.Debug().Model(&Key{}).Where("user_email= ?", email).Find(&Keys).Error
+	if err != nil {
+		return []Key{}, err
+	}
+	return Keys, nil
 }
