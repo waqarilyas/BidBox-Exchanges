@@ -134,22 +134,22 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 
 	for _, position := range positionsList {
 		pos := shared.OrderHistoryResponse{
-			Symbol: position.Symbol,
-			OrderID: position.OrderID,
-			Price: position.Price,
-			Qty: position.Qty,
+			Symbol:      position.Symbol,
+			OrderID:     position.OrderID,
+			Price:       position.Price,
+			Qty:         position.Qty,
 			OrderStatus: position.OrderStatus,
-			Side: position.Side,
-			Profit: 0.00,
+			Side:        position.Side,
+			Profit:      0.00,
 			// CancelType: position.CancelType,
-			AvgPrice: position.AvgPrice,
-			CumExecQty: position.CumExecQty,
-			CumExecValue: position.CumExecValue,
-			CumExecFee: position.CumExecFee,
-			OrderType: position.OrderType,
+			AvgPrice:      position.AvgPrice,
+			CumExecQty:    position.CumExecQty,
+			CumExecValue:  position.CumExecValue,
+			CumExecFee:    position.CumExecFee,
+			OrderType:     position.OrderType,
 			StopOrderType: position.StopOrderType,
-			CreatedTime: position.CreatedTime,
-			UpdatedTime: position.UpdatedTime,
+			CreatedTime:   position.CreatedTime,
+			UpdatedTime:   position.UpdatedTime,
 		}
 
 		formattedPositions = append(formattedPositions, pos)
@@ -165,23 +165,23 @@ func TransformAccountClosedResponse(positionData Statment) []shared.ClosedPnlDat
 
 	for _, position := range positionsList {
 		pos := shared.ClosedPnlData{
-			Symbol: position.Symbol,
-			OrderType: position.OrderType,
-			Leverage: position.Leverage,
-			UpdatedTime: position.UpdatedTime,
-			Side: position.Side,
-			OrderID: position.OrderID,
-			ClosedPnl: position.ClosedPnl,
+			Symbol:        position.Symbol,
+			OrderType:     position.OrderType,
+			Leverage:      position.Leverage,
+			UpdatedTime:   position.UpdatedTime,
+			Side:          position.Side,
+			OrderID:       position.OrderID,
+			ClosedPnl:     position.ClosedPnl,
 			AvgEntryPrice: position.AvgEntryPrice,
-			Quantity: position.Quantity,
+			Quantity:      position.Quantity,
 			CumEntryValue: position.CumEntryValue,
-			CreatedTime: position.CreatedTime,
-			OrderPrice: position.OrderPrice,
-			ClosedSize: position.ClosedSize,
-			AvgExitPrice: position.AvgExitPrice,
-			ExecType: position.ExecType,
-			FillCount: position.FillCount,
-			CumExitValue: position.CumExitValue,
+			CreatedTime:   position.CreatedTime,
+			OrderPrice:    position.OrderPrice,
+			ClosedSize:    position.ClosedSize,
+			AvgExitPrice:  position.AvgExitPrice,
+			ExecType:      position.ExecType,
+			FillCount:     position.FillCount,
+			CumExitValue:  position.CumExitValue,
 		}
 
 		formattedPositions = append(formattedPositions, pos)
@@ -191,7 +191,7 @@ func TransformAccountClosedResponse(positionData Statment) []shared.ClosedPnlDat
 }
 
 func HasRequiredPermissions(permissions []string) bool {
-	requiredStrings := []string{"Order", "Position", "ExchangeHistory"}
+	requiredStrings := []string{"Order", "Position", "ExchangeHistory", "DerivativesTrade"}
 
 	for _, str := range requiredStrings {
 		found := false

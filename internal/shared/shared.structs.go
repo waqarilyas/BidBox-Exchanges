@@ -31,42 +31,41 @@ type PositionsData struct {
 }
 
 type ClosedPnlData struct {
-    Symbol         string `json:"symbol"`
-    OrderType      string `json:"orderType"`
-    Leverage       string `json:"leverage"`
-    UpdatedTime    string `json:"updatedTime"`
-    Side           string `json:"side"`
-    OrderID        string `json:"orderId"`
-    ClosedPnl      string `json:"closedPnl"`
-    AvgEntryPrice  string `json:"avgEntryPrice"`
-    Quantity       string `json:"qty"`
-    CumEntryValue  string `json:"cumEntryValue"`
-    CreatedTime    string `json:"createdTime"`
-    OrderPrice     string `json:"orderPrice"`
-    ClosedSize     string `json:"closedSize"`
-    AvgExitPrice   string `json:"avgExitPrice"`
-    ExecType       string `json:"execType"`
-    FillCount      string `json:"fillCount"`
-    CumExitValue   string `json:"cumExitValue"`
+	Symbol        string `json:"symbol"`
+	OrderType     string `json:"orderType"`
+	Leverage      string `json:"leverage"`
+	UpdatedTime   string `json:"updatedTime"`
+	Side          string `json:"side"`
+	OrderID       string `json:"orderId"`
+	ClosedPnl     string `json:"closedPnl"`
+	AvgEntryPrice string `json:"avgEntryPrice"`
+	Quantity      string `json:"qty"`
+	CumEntryValue string `json:"cumEntryValue"`
+	CreatedTime   string `json:"createdTime"`
+	OrderPrice    string `json:"orderPrice"`
+	ClosedSize    string `json:"closedSize"`
+	AvgExitPrice  string `json:"avgExitPrice"`
+	ExecType      string `json:"execType"`
+	FillCount     string `json:"fillCount"`
+	CumExitValue  string `json:"cumExitValue"`
 }
 
 type OrderHistoryResponse struct {
-	OrderID           string  `json:"orderId"`
-	Symbol            string  `json:"symbol"`
-	Price             string  `json:"price"`
-	Qty               string  `json:"qty"`
-	Side              string  `json:"side"`
-	OrderStatus       string  `json:"orderStatus"`
-	Profit 		  	  float64  `json:"profit"`
+	OrderID     string  `json:"orderId"`
+	Symbol      string  `json:"symbol"`
+	Price       string  `json:"price"`
+	Qty         string  `json:"qty"`
+	Side        string  `json:"side"`
+	OrderStatus string  `json:"orderStatus"`
+	Profit      float64 `json:"profit"`
 	// CancelType        string  `json:"cancelType"`
-	AvgPrice          string  `json:"avgPrice"`
-	CumExecQty        string  `json:"cumExecQty"`
-	CumExecValue      string  `json:"cumExecValue"`
-	CumExecFee        string  `json:"cumExecFee"`
-	OrderType         string  `json:"orderType"`
-	StopOrderType     string  `json:"stopOrderType"`
+	AvgPrice      string `json:"avgPrice"`
+	CumExecQty    string `json:"cumExecQty"`
+	CumExecValue  string `json:"cumExecValue"`
+	CumExecFee    string `json:"cumExecFee"`
+	OrderType     string `json:"orderType"`
+	StopOrderType string `json:"stopOrderType"`
 	// OrderIv           string  `json:"orderIv"`
-	CreatedTime       string  `json:"createdTime"`
-	UpdatedTime       string  `json:"updatedTime"`
+	CreatedTime string `json:"createdTime"`
+	UpdatedTime string `json:"updatedTime"`
 }
-

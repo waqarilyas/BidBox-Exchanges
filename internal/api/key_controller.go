@@ -65,7 +65,7 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 		permissions := bybitKeyInfo.Result[0].Permissions
 		hasPermission := bybit.HasRequiredPermissions(permissions)
 		if !hasPermission {
-			response.ERROR(w, http.StatusBadRequest, errors.New("insufficient key permissions. Please provide permissions for 'Order', 'Position', 'ExchangeHistory'"))
+			response.ERROR(w, http.StatusBadRequest, errors.New("insufficient key permissions. Please provide permissions for 'Order', 'Position', 'ExchangeHistory' and 'DerivativesTrade'"))
 			return
 		}
 
