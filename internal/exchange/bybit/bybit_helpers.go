@@ -97,7 +97,7 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 		positionSide := "long"
 		holdMode := "single_hold"
 
-		if position.Side == "short" {
+		if position.Side == "Sell" {
 			positionSide = "short"
 		}
 
