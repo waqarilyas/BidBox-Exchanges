@@ -53,10 +53,17 @@ func TransformContractAccountBalance(accountData AccountBalanceResponse) shared.
 
 	}
 
+	totalUsdtPnl := 0.0
+
+	if data.TotalPerpUPL != "" {
+		totalUsdtPnl, _ = strconv.ParseFloat(data.TotalPerpUPL, 64)
+	}
+
 	return shared.AccountData{
 		Available:     totalAvailable,
 		MarginBalance: totalEquity,
 		UnrealizedPL:  totalUnrealizedPL,
+		UsdtPnl:       totalUsdtPnl,
 	}
 
 }

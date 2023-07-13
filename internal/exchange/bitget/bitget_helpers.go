@@ -22,18 +22,30 @@ func TransformAccountsResponse(accountsData AccountData) shared.AccountData {
 	totalAvailable := 0.0
 	totalUnrealizedPL := 0.0
 	totalEquity := 0.0
+	usdtPnl := 0.0
 
+	// positionUsdUpl:=
 	for _, marginData := range accountsData.Data {
 		available, err := strconv.ParseFloat(marginData.Available, 64)
 		if err != nil {
 			fmt.Println("Error parsing available balance:", err)
 		}
+
 		totalAvailable += available
 		equity, err := strconv.ParseFloat(marginData.USDTEquity, 64)
 		if err != nil {
 			fmt.Println("Error parsing equity:", err)
 		}
+		marginEquity, err := strconv.ParseFloat(marginData.Equity, 64)
+		if err != nil {
+			fmt.Println("Error parsing equity:", err)
+		}
+
 		totalEquity += equity
+
+		marginRate := equity / marginEquity
+		marginPnl := (marginEquity - available) * marginRate
+		usdtPnl += marginPnl
 
 		unrealizedPL, err := strconv.ParseFloat(marginData.UnrealizedPL, 64)
 		if err != nil {
@@ -46,6 +58,7 @@ func TransformAccountsResponse(accountsData AccountData) shared.AccountData {
 		Available:     totalAvailable,
 		MarginBalance: totalEquity,
 		UnrealizedPL:  totalUnrealizedPL,
+		UsdtPnl:       usdtPnl,
 	}
 
 }
@@ -94,32 +107,32 @@ func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHist
 		fee := strconv.FormatFloat(position.Fee, 'f', -1, 64)
 		// createdTime := strconv.FormatInt(position.CTime, 10)
 		state := "position.State"
-		if position.State == "init"{
+		if position.State == "init" {
 			state = "Created"
-		}else if position.State == "new"{
+		} else if position.State == "new" {
 			state = "New"
-		}else if position.State == "partially_filled"{
+		} else if position.State == "partially_filled" {
 			state = "PartiallyFilled"
-		}else if position.State == "filled"{
+		} else if position.State == "filled" {
 			state = "Filled"
-		}else if position.State == "canceled"{
+		} else if position.State == "canceled" {
 			state = "Cancelled"
-		}else {
+		} else {
 			state = "Unknown"
 		}
 		pos := shared.OrderHistoryResponse{
-			Symbol: position.Symbol,
-			OrderID: position.OrderID,
-			Side: position.Side,
-			Price: price,
-			Profit: position.TotalProfits,
-			Qty: qty,
-			OrderStatus: state,
-			AvgPrice: "0",
-			CumExecQty: "0",
-			CumExecValue: "0",
-			CumExecFee: fee,
-			OrderType: position.OrderType,
+			Symbol:        position.Symbol,
+			OrderID:       position.OrderID,
+			Side:          position.Side,
+			Price:         price,
+			Profit:        position.TotalProfits,
+			Qty:           qty,
+			OrderStatus:   state,
+			AvgPrice:      "0",
+			CumExecQty:    "0",
+			CumExecValue:  "0",
+			CumExecFee:    fee,
+			OrderType:     position.OrderType,
 			StopOrderType: "UNKNOWN",
 			// OrderIv: position.OrderIv,
 			CreatedTime: position.CTime,

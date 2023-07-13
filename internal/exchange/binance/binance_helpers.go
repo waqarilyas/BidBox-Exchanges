@@ -50,11 +50,14 @@ func TransformAccountResponse(accountData AccountsResponse) shared.AccountData {
 		fmt.Println("Error parsing unrealizedPl:", err)
 	}
 
+	floatUpl, _ := strconv.ParseFloat(accountData.TotalCrossUnPnl, 64)
+
 	transformedData := shared.AccountData{
 		Available:     availableBalance,
 		Equity:        walletBalance,
 		MarginBalance: marginBalance,
 		UnrealizedPL:  unrealizedPl,
+		UsdtPnl:       floatUpl,
 	}
 
 	return transformedData

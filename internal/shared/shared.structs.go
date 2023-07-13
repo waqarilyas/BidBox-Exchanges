@@ -5,6 +5,7 @@ type AccountData struct {
 	Equity        float64 `json:"equity"`
 	MarginBalance float64 `json:"marginBalance"`
 	UnrealizedPL  float64 `json:"unrealizedPl"`
+	UsdtPnl       float64 `json:"usdtPnl"`
 }
 
 type DecryptedKeys struct {
