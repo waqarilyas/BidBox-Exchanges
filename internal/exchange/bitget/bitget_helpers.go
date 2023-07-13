@@ -86,6 +86,7 @@ func TransformPositionsResponse(positionsData MarginDataResponse) []shared.Posit
 				CreationTime:     position.CTime,
 				UnrealizedPL:     position.UnrealizedPL,
 				Leverage:         strLeverage,
+				EntryPrice:       position.AverageOpenPrice,
 			}
 			formattedPositions = append(formattedPositions, pos)
 		}
