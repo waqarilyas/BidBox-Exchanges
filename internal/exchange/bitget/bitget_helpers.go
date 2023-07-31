@@ -95,6 +95,32 @@ func TransformPositionsResponse(positionsData MarginDataResponse) []shared.Posit
 
 }
 
+// func TransformHistoricalPositionResponse(positionsData PositionHistory) []TradeInfo {
+// 	positions := positionsData.Data.List
+// 	var formattedPositions []shared.PositionsData
+// 	for _, position := range positions {
+// 		// strLeverage := fmt.Sprintf("%v", position.Leverage)
+// 		pos := shared.PositionsData{
+// 			MarginCoin:       position.MarginCoin,
+// 			Symbol:           position.Symbol,
+// 			HoldSide:         position.HoldSide,
+// 			Margin:           position.OpenTotalPos,
+// 			Total:            position.OpenTotalPos,
+// 			MarginMode:       position.MarginMode,
+// 			HoldMode:         position.HoldSide,
+// 			MarketPrice:      position.OpenAvgPrice,
+// 			CreationTime:     position.CTime,
+// 			UnrealizedPL:     position.PNL,
+
+// 			EntryPrice:       position.OpenAvgPrice,
+// 		}
+// 		formattedPositions = append(formattedPositions, pos)
+
+// 	}
+// 	return formattedPositions
+
+// }
+
 func TransformOrderHistoryResponse(positionData OrderHistory) []shared.OrderHistoryResponse {
 	positionsList := positionData.Data.List
 

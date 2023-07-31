@@ -90,8 +90,36 @@ func (server *Server) GetBitgetOpenPositions(w http.ResponseWriter, r *http.Requ
 	}
 
 	response.JSON(w, http.StatusOK, formattedPositions)
-
 }
+
+func (server *Server) GetBitgetHistoricalPositions(w http.ResponseWriter, r *http.Request) {
+	userEmail := r.URL.Query().Get("email")
+	if userEmail == "" {
+		response.ERROR(w, http.StatusBadRequest, errors.New("email is required"))
+		return
+	}
+
+	Key := models.Key{}
+
+	userKeys, err := Key.FindKeyByEmailAndService(server.DB, "bitget", userEmail)
+	if err != nil {
+		response.ERROR(w, http.StatusBadRequest, errors.New("unable to fetch user keys. Please check your email"))
+		return
+	}
+
+	trandformedKeys, err := shared.DecryptUserKeys(userKeys)
+	if err != nil {
+		response.ERROR(w, http.StatusInternalServerError, errors.New("failed to decrypt keys"))
+	}
+
+	positionsresponse, err := bitget.PerformBitgetHistoricalPositionQuery(trandformedKeys.ApiKey, trandformedKeys.Secret, trandformedKeys.Passphrase)
+	if err != nil {
+		response.ERROR(w, http.StatusBadRequest, errors.New("unable to get user positions at the moment"))
+	}
+
+	response.JSON(w, http.StatusOK, positionsresponse.Data.List)
+}
+
 func (server *Server) GetBitgetOrderHistory(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
@@ -111,7 +139,6 @@ func (server *Server) GetBitgetOrderHistory(w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		response.ERROR(w, http.StatusInternalServerError, errors.New("failed to decrypt keys"))
 	}
-
 
 	accountResponse, err := bitget.GetOrderHistory(trandformedKeys.ApiKey, trandformedKeys.Secret, trandformedKeys.Passphrase)
 	if err != nil {

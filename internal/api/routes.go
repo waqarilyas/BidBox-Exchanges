@@ -27,6 +27,7 @@ func (r *Server) InitializeRoutes() {
 	s.HandleFunc("/bitget/account", middleware.MiddlewareJSON(r.GetBitgetAccountDetailsData)).Methods("GET")
 	s.HandleFunc("/bitget/positions", middleware.MiddlewareJSON(r.GetBitgetOpenPositions)).Methods("GET")
 	s.HandleFunc("/bitget/orderHistory", middleware.MiddlewareJSON(r.GetBitgetOrderHistory)).Methods("GET")
+	s.HandleFunc("/bitget/historical-positions", middleware.MiddlewareJSON(r.GetBitgetHistoricalPositions)).Methods("GET")
 	// Bybit Routes
 	s.HandleFunc("/bybit/account", middleware.MiddlewareJSON(r.GetBybitAccountDetails)).Methods("GET")
 	s.HandleFunc("/bybit/positions", middleware.MiddlewareJSON(r.GetBybitAccountPositions)).Methods("GET")
@@ -36,7 +37,4 @@ func (r *Server) InitializeRoutes() {
 	s.HandleFunc("/binance/account", middleware.MiddlewareJSON(r.GetBinanceAccountDetailsData)).Methods("GET")
 	s.HandleFunc("/binance/positions", middleware.MiddlewareJSON(r.GetBinanceAccountPositionsData)).Methods("GET")
 	s.HandleFunc("/binance/orderHistory", middleware.MiddlewareJSON(r.GetBinanceOrderHistory)).Methods("GET")
-
-
-
 }

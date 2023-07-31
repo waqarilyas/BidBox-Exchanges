@@ -113,35 +113,63 @@ type User struct {
 type OrderHistory struct {
 	Code string `json:"code"`
 	Data struct {
-		NextFlag  bool         `json:"nextFlag"`
-		EndID     string       `json:"endId"`
-		List []OrderItem `json:"orderList"`
+		NextFlag bool        `json:"nextFlag"`
+		EndID    string      `json:"endId"`
+		List     []OrderItem `json:"orderList"`
 	} `json:"data"`
 	Msg string `json:"msg"`
 }
 
 type OrderItem struct {
-	Symbol            string  `json:"symbol"`
-	Size              float64     `json:"size"`
-	OrderID           string  `json:"orderId"`
-	ClientOID         string  `json:"clientOid"`
-	FilledQty         float64     `json:"filledQty"`
-	Fee               float64 `json:"fee"`
-	Price             float64 `json:"price"`
-	State             string  `json:"state"`
-	Side              string  `json:"side"`
-	TimeInForce       string  `json:"timeInForce"`
-	TotalProfits      float64 `json:"totalProfits"`
-	PosSide           string  `json:"posSide"`
-	MarginCoin        string  `json:"marginCoin"`
-	Leverage          string  `json:"leverage"`
-	MarginMode        string  `json:"marginMode"`
-	OrderType         string  `json:"orderType"`
-	ReduceOnly        bool    `json:"reduceOnly"`
-	EnterPointSource  string  `json:"enterPointSource"`
-	TradeSide         string  `json:"tradeSide"`
-	HoldMode          string  `json:"holdMode"`
-	OrderSource       string  `json:"orderSource"`
-	CTime             string   `json:"ctime"`
-	UTime             string   `json:"utime"`
+	Symbol           string  `json:"symbol"`
+	Size             float64 `json:"size"`
+	OrderID          string  `json:"orderId"`
+	ClientOID        string  `json:"clientOid"`
+	FilledQty        float64 `json:"filledQty"`
+	Fee              float64 `json:"fee"`
+	Price            float64 `json:"price"`
+	State            string  `json:"state"`
+	Side             string  `json:"side"`
+	TimeInForce      string  `json:"timeInForce"`
+	TotalProfits     float64 `json:"totalProfits"`
+	PosSide          string  `json:"posSide"`
+	MarginCoin       string  `json:"marginCoin"`
+	Leverage         string  `json:"leverage"`
+	MarginMode       string  `json:"marginMode"`
+	OrderType        string  `json:"orderType"`
+	ReduceOnly       bool    `json:"reduceOnly"`
+	EnterPointSource string  `json:"enterPointSource"`
+	TradeSide        string  `json:"tradeSide"`
+	HoldMode         string  `json:"holdMode"`
+	OrderSource      string  `json:"orderSource"`
+	CTime            string  `json:"ctime"`
+	UTime            string  `json:"utime"`
+}
+
+type PositionHistory struct {
+	Code string `json:"code"`
+	Data struct {
+		NextFlag bool        `json:"nextFlag"`
+		EndID    string      `json:"endId"`
+		List     []TradeInfo `json:"list"`
+	} `json:"data"`
+	Msg string `json:"msg"`
+}
+
+type TradeInfo struct {
+	Symbol        string `json:"symbol"`
+	MarginCoin    string `json:"marginCoin"`
+	HoldSide      string `json:"holdSide"`
+	OpenAvgPrice  string `json:"openAvgPrice"`
+	CloseAvgPrice string `json:"closeAvgPrice"`
+	MarginMode    string `json:"marginMode"`
+	OpenTotalPos  string `json:"openTotalPos"`
+	CloseTotalPos string `json:"closeTotalPos"`
+	PNL           string `json:"pnl"`
+	NetProfit     string `json:"netProfit"`
+	TotalFunding  string `json:"totalFunding"`
+	OpenFee       string `json:"openFee"`
+	CloseFee      string `json:"closeFee"`
+	CTime         string `json:"ctime"`
+	UTime         string `json:"utime"`
 }
