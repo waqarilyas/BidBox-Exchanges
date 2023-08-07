@@ -90,6 +90,7 @@ func TransformUnifiedAccountBalance(accountData AccountBalanceResponse) shared.A
 		Available:     available,
 		MarginBalance: equity,
 		UnrealizedPL:  unrealizedPL,
+		UsdtPnl:       unrealizedPL,
 	}
 
 }
