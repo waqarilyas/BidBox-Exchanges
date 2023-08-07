@@ -65,6 +65,7 @@ func TransformAccountsResponse(accountsData AccountData) shared.AccountData {
 
 func TransformPositionsResponse(positionsData MarginDataResponse) []shared.PositionsData {
 	positions := positionsData.Data
+
 	var formattedPositions []shared.PositionsData
 	for _, position := range positions {
 

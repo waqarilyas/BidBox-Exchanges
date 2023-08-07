@@ -116,7 +116,7 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 			MarginCoin:       position.Symbol,
 			Symbol:           position.Symbol,
 			HoldSide:         positionSide,
-			Margin:           position.PositionMM,
+			Margin:           position.PositionIM,
 			Available:        position.PositionValue,
 			Total:            position.Size,
 			MarginMode:       "fixed",
