@@ -105,6 +105,8 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 		positionSide := "long"
 		holdMode := "single_hold"
 
+		// marginCoin := strings.Split(position.Symbol, "USDT")
+
 		if position.Side == "Sell" {
 			positionSide = "short"
 		}
@@ -114,7 +116,7 @@ func TransformAccountPositionsResponse(positionData PositionsResponse) []shared.
 		}
 
 		pos := shared.PositionsData{
-			MarginCoin:       position.Symbol,
+			MarginCoin:       "USDT",
 			Symbol:           position.Symbol,
 			HoldSide:         positionSide,
 			Margin:           position.PositionIM,
