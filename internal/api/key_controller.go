@@ -22,6 +22,22 @@ func (server *Server) Home(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, "Exchanges Service")
 }
 
+type KeyResp struct {
+	status  int
+	message string
+}
+
+// Create Key godoc
+// @Summary      Create Key
+// @Description  Create Key
+// @Tags         keys
+// @Accept       json
+// @Produce      json
+// @Param        key body  models.Key true  "create key"
+// @Success      200  {object} KeyResp
+// @Failure      400  {object}  KeyResp
+// @Failure      422  {object}  KeyResp
+// @Router       /keys [post]
 func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -29,9 +45,12 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	Key := models.Key{}
+	keyResp := KeyResp{}
 	err = json.Unmarshal(body, &Key)
 	if err != nil {
-		response.ERROR(w, http.StatusUnprocessableEntity, err)
+		keyResp.message = err.Error()
+		keyResp.status = http.StatusUnprocessableEntity
+		response.JSON(w, http.StatusUnprocessableEntity, keyResp)
 		return
 	}
 
@@ -39,33 +58,43 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 
 	valErr := Key.Validate()
 	if valErr != nil {
-		response.ERROR(w, http.StatusUnprocessableEntity, valErr)
+		keyResp.message = err.Error()
+		keyResp.status = http.StatusUnprocessableEntity
+		response.JSON(w, http.StatusUnprocessableEntity, keyResp)
 		return
 	}
 
 	if Key.Service == "bitget" {
 		_, validationError := helpers.ValidateBitgetKeys(Key.SecretKey, Key.ApiKey, Key.Passphrase)
 		if validationError != nil {
-			response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
+			keyResp.message = "invalid api keys credentials"
+			keyResp.status = http.StatusBadRequest
+			response.JSON(w, http.StatusBadRequest, keyResp)
 			return
 		}
 	} else if Key.Service == "binance" {
 		_, validationError := binance.GetBinanceAccountDetails(Key.ApiKey, Key.SecretKey)
 		if validationError != nil {
-			response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
+			keyResp.message = "invalid api keys credentials"
+			keyResp.status = http.StatusBadRequest
+			response.JSON(w, http.StatusBadRequest, keyResp)
 			return
 		}
 	} else if Key.Service == "bybit" {
 		bybitKeyInfo, validationError := bybit.GetBybitApiKeyInfo(Key.ApiKey, Key.SecretKey)
 		if validationError != nil {
-			response.ERROR(w, http.StatusBadRequest, errors.New("invalid api keys credentials"))
+			keyResp.message = "invalid api keys credentials"
+			keyResp.status = http.StatusBadRequest
+			response.JSON(w, http.StatusBadRequest, keyResp)
 			return
 		}
 
 		permissions := bybitKeyInfo.Result[0].Permissions
 		hasPermission := bybit.HasRequiredPermissions(permissions)
 		if !hasPermission {
-			response.ERROR(w, http.StatusBadRequest, errors.New("insufficient key permissions. Please provide permissions for 'Order', 'Position', 'ExchangeHistory' and 'DerivativesTrade'"))
+			keyResp.message = "insufficient key permissions. Please provide permissions for 'Order', 'Position', 'ExchangeHistory' and 'DerivativesTrade'"
+			keyResp.status = http.StatusBadRequest
+			response.JSON(w, http.StatusBadRequest, keyResp)
 			return
 		}
 
@@ -73,7 +102,9 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 
 	dbRes, _ := Key.FindKeyByEmailAndService(server.DB, Key.Service, Key.UserEmail)
 	if dbRes != nil {
-		response.ERROR(w, http.StatusBadRequest, errors.New("api key already exists"))
+		keyResp.message = "api key already exists"
+		keyResp.status = http.StatusBadRequest
+		response.JSON(w, http.StatusBadRequest, keyResp)
 		return
 	}
 
@@ -84,9 +115,20 @@ func (server *Server) CreateKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Location", fmt.Sprintf("%s%s/%s", r.Host, r.RequestURI, KeyCreated.Uid))
-	response.JSON(w, http.StatusOK, "Api key validated and saved successfully")
+	keyResp.message = "Api key validated and saved successfully"
+	keyResp.status = http.StatusOK
+	response.JSON(w, http.StatusOK, keyResp)
 }
 
+// Get Key godoc
+// @Summary      Get Key
+// @Description  Get Key
+// @Tags         keys
+// @Accept       json
+// @Produce      json
+// @Success      200  {object} models.Key
+// @Failure      500  {string} res server error
+// @Router       /keys [get]
 func (server *Server) GetKeys(w http.ResponseWriter, r *http.Request) {
 
 	Key := models.Key{}
@@ -99,6 +141,16 @@ func (server *Server) GetKeys(w http.ResponseWriter, r *http.Request) {
 	response.JSON(w, http.StatusOK, Keys)
 }
 
+// Get Key By Id godoc
+// @Summary      Get Key By Id
+// @Description  Get Key By Id
+// @Tags         keys
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  true  "Key ID"
+// @Success      200  {object} models.Key
+// @Failure      400  {string} resp bad request
+// @Router       /keys/{id} [get]
 func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 
 	kid := mux.Vars(r)["id"]
@@ -114,50 +166,4 @@ func (server *Server) GetKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	response.JSON(w, http.StatusOK, KeyGotten)
-}
-
-type updateLeverageRequest struct {
-	Emails []string `json:"emails"`
-	symbol string `json:"symbol"`
-	buyLeverage int `json:"buyLeverage"`
-
-}
-// type updateLeverage struct {
-// 	Category     string `json:"category"`
-// 	Symbol       string `json:"symbol"`
-// 	BuyLeverage  string `json:"buyLeverage"`
-// 	SellLeverage string `json:"sellLeverage"`
-// }
-
-func (server *Server) updateLeverage(w http.ResponseWriter, r *http.Request) {
-		var req updateLeverageRequest
-		err := json.NewDecoder(r.Body).Decode(&req)
-		if err != nil {
-			http.Error(w, "Failed to parse request body", http.StatusBadRequest)
-			return
-		}
-	
-		// Loop through the emails and print them
-		for _, email := range req.Emails {
-			fmt.Println(email)
-			key := models.Key{}
-			keys, err := key.FindKeyByEmail(server.DB, email)
-			if err != nil {
-				response.ERROR(w, http.StatusBadRequest, err)
-			}
-			for _, currentkey := range keys {
-				fmt.Println(currentkey)
-				if currentkey.Service == "bybit" {
-					leverage := models.UpdateLeverage{}
-					leverage.Category = "linear"
-					leverage.Symbol = req.symbol
-					leverage.BuyLeverage = string(req.buyLeverage)
-					leverage.SellLeverage = string(req.buyLeverage)
-					// bybit.UpdatebybitLeverage(currentkey.ApiKey, currentkey.SecretKey, leverage)
-
-			}
-			
-		}
-		
-		}
 }

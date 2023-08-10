@@ -1,0 +1,109 @@
+basePath: /exchanges
+definitions:
+  api.KeyResp:
+    type: object
+  models.Key:
+    properties:
+      api_key:
+        type: string
+      key_id:
+        type: string
+      passphrase:
+        type: string
+      secret_key:
+        type: string
+      service:
+        type: string
+      uid:
+        type: string
+      user_email:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is BidBox Exchanges Service.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: BidBox Exchanges Service API
+  version: "1.0"
+paths:
+  /keys:
+    get:
+      consumes:
+      - application/json
+      description: Get Key
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Key'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Key
+      tags:
+      - keys
+    post:
+      consumes:
+      - application/json
+      description: Create Key
+      parameters:
+      - description: create key
+        in: body
+        name: key
+        required: true
+        schema:
+          $ref: '#/definitions/models.Key'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.KeyResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.KeyResp'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/api.KeyResp'
+      summary: Create Key
+      tags:
+      - keys
+  /keys/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Key By Id
+      parameters:
+      - description: Key ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Key'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get Key By Id
+      tags:
+      - keys
+swagger: "2.0"
