@@ -13,6 +13,16 @@ import (
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
 
+// Get Bitget Account Details godoc
+// @Summary      Get Bitget Account Details
+// @Description  Get Nitget Account Details
+// @Tags         bitget
+// @Accept       json
+// @Produce      json
+// @Param        email query  string true  "email"
+// @Success      200  {object} shared.AccountData
+// @Failure      400  {string}  bad request
+// @Router       /bitget/account [get]
 func (server *Server) GetBitgetAccountDetailsData(w http.ResponseWriter, r *http.Request) {
 
 	userEmail := r.URL.Query().Get("email")
@@ -59,6 +69,16 @@ func (server *Server) GetBitgetAccountDetailsData(w http.ResponseWriter, r *http
 
 }
 
+// Get Bitget Open Positions godoc
+// @Summary      Get Bitget Open Positions
+// @Description  Get Nitget Open Positions
+// @Tags         bitget
+// @Accept       json
+// @Produce      json
+// @Param        email query  string true  "email"
+// @Success      200  {object} []shared.PositionsData
+// @Failure      400  {string}  bad request
+// @Router       /bitget/positions [get]
 func (server *Server) GetBitgetOpenPositions(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
@@ -92,6 +112,17 @@ func (server *Server) GetBitgetOpenPositions(w http.ResponseWriter, r *http.Requ
 	response.JSON(w, http.StatusOK, formattedPositions)
 }
 
+// Get Bitget Historical Positions godoc
+// @Summary      Get Bitget Historical Positions
+// @Description  Get Nitget Historical Positions
+// @Tags         bitget
+// @Accept       json
+// @Produce      json
+// @Param        email query  string true  "email"
+// @Success      200  {object} bitget.PositionHistory.Data.List
+// @Failure      400  {string}  bad request
+// @Failure      500  {string}  bad request
+// @Router       /bitget/historical-positions [get]
 func (server *Server) GetBitgetHistoricalPositions(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
@@ -120,6 +151,17 @@ func (server *Server) GetBitgetHistoricalPositions(w http.ResponseWriter, r *htt
 	response.JSON(w, http.StatusOK, positionsresponse.Data.List)
 }
 
+// Get Bitget OrderHistory godoc
+// @Summary      Get Bitget Order History
+// @Description  Get Nitget Order History
+// @Tags         bitget
+// @Accept       json
+// @Produce      json
+// @Param        email query  string true  "email"
+// @Success      200  {object} shared.OrderHistoryResponse
+// @Failure      400  {string}  bad request
+// @Failure      500  {string}  bad request
+// @Router       /bitget/orderHistory [get]
 func (server *Server) GetBitgetOrderHistory(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {

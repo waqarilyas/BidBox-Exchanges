@@ -25,6 +25,493 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/binance/account": {
+            "get": {
+                "description": "Get Binance Account Details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "binance"
+                ],
+                "summary": "Get Binance Account Details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/shared.AccountData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/binance/orderHistory": {
+            "get": {
+                "description": "Get Binance Order History",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "binance"
+                ],
+                "summary": "Get Binance Order History",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/shared.OrderHistoryResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/binance/positions": {
+            "get": {
+                "description": "Get Binance Positions Data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "binance"
+                ],
+                "summary": "Get Binance Positions Data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/shared.PositionsData"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bitget/account": {
+            "get": {
+                "description": "Get Nitget Account Details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bitget"
+                ],
+                "summary": "Get Bitget Account Details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/shared.AccountData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bitget/historical-positions": {
+            "get": {
+                "description": "Get Nitget Historical Positions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bitget"
+                ],
+                "summary": "Get Bitget Historical Positions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/bitget.PositionHistory"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bitget/orderHistory": {
+            "get": {
+                "description": "Get Nitget Order History",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bitget"
+                ],
+                "summary": "Get Bitget Order History",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/shared.OrderHistoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bitget/positions": {
+            "get": {
+                "description": "Get Nitget Open Positions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bitget"
+                ],
+                "summary": "Get Bitget Open Positions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/shared.PositionsData"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bybit/account": {
+            "get": {
+                "description": "Get Bybit Account Details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bybit"
+                ],
+                "summary": "Get Bybit Account Details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/shared.AccountData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bybit/closedpnl": {
+            "get": {
+                "description": "Get Bybit Closed PnL",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bybit"
+                ],
+                "summary": "Get Bybit Closed PnL",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/shared.ClosedPnlData"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bybit/orderHistory": {
+            "get": {
+                "description": "Get Bybit Order History",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bybit"
+                ],
+                "summary": "Get Bybit Order History",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/shared.OrderHistoryResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/bybit/positions": {
+            "get": {
+                "description": "Get Bybit Positions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bybit"
+                ],
+                "summary": "Get Bybit Positions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/bybit.PositionsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/keys": {
             "get": {
                 "description": "Get Key",
@@ -141,6 +628,204 @@ const docTemplate = `{
         "api.KeyResp": {
             "type": "object"
         },
+        "bitget.PositionHistory": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "endId": {
+                            "type": "string"
+                        },
+                        "list": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/bitget.TradeInfo"
+                            }
+                        },
+                        "nextFlag": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "bitget.TradeInfo": {
+            "type": "object",
+            "properties": {
+                "closeAvgPrice": {
+                    "type": "string"
+                },
+                "closeFee": {
+                    "type": "string"
+                },
+                "closeTotalPos": {
+                    "type": "string"
+                },
+                "ctime": {
+                    "type": "string"
+                },
+                "holdSide": {
+                    "type": "string"
+                },
+                "marginCoin": {
+                    "type": "string"
+                },
+                "marginMode": {
+                    "type": "string"
+                },
+                "netProfit": {
+                    "type": "string"
+                },
+                "openAvgPrice": {
+                    "type": "string"
+                },
+                "openFee": {
+                    "type": "string"
+                },
+                "openTotalPos": {
+                    "type": "string"
+                },
+                "pnl": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "totalFunding": {
+                    "type": "string"
+                },
+                "utime": {
+                    "type": "string"
+                }
+            }
+        },
+        "bybit.Position": {
+            "type": "object",
+            "properties": {
+                "adlRankIndicator": {
+                    "type": "integer"
+                },
+                "autoAddMargin": {
+                    "type": "integer"
+                },
+                "avgPrice": {
+                    "type": "string"
+                },
+                "bustPrice": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "cumRealisedPnl": {
+                    "type": "string"
+                },
+                "leverage": {
+                    "type": "string"
+                },
+                "liqPrice": {
+                    "type": "string"
+                },
+                "markPrice": {
+                    "type": "string"
+                },
+                "positionBalance": {
+                    "type": "string"
+                },
+                "positionIM": {
+                    "type": "string"
+                },
+                "positionIdx": {
+                    "type": "integer"
+                },
+                "positionMM": {
+                    "type": "string"
+                },
+                "positionStatus": {
+                    "type": "string"
+                },
+                "positionValue": {
+                    "type": "string"
+                },
+                "riskId": {
+                    "type": "integer"
+                },
+                "riskLimitValue": {
+                    "type": "string"
+                },
+                "side": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "string"
+                },
+                "stopLoss": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "takeProfit": {
+                    "type": "string"
+                },
+                "tpslMode": {
+                    "type": "string"
+                },
+                "tradeMode": {
+                    "type": "integer"
+                },
+                "trailingStop": {
+                    "type": "string"
+                },
+                "unrealisedPnl": {
+                    "type": "string"
+                },
+                "updatedTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "bybit.PositionsResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "type": "string"
+                        },
+                        "list": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/bybit.Position"
+                            }
+                        },
+                        "nextPageCursor": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "retCode": {
+                    "type": "integer"
+                },
+                "retExtInfo": {
+                    "type": "object"
+                },
+                "retMsg": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Key": {
             "type": "object",
             "properties": {
@@ -163,6 +848,181 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_email": {
+                    "type": "string"
+                }
+            }
+        },
+        "shared.AccountData": {
+            "type": "object",
+            "properties": {
+                "available": {
+                    "type": "number"
+                },
+                "equity": {
+                    "type": "number"
+                },
+                "marginBalance": {
+                    "type": "number"
+                },
+                "unrealizedPl": {
+                    "type": "number"
+                },
+                "usdtPnl": {
+                    "type": "number"
+                }
+            }
+        },
+        "shared.ClosedPnlData": {
+            "type": "object",
+            "properties": {
+                "avgEntryPrice": {
+                    "type": "string"
+                },
+                "avgExitPrice": {
+                    "type": "string"
+                },
+                "closedPnl": {
+                    "type": "string"
+                },
+                "closedSize": {
+                    "type": "string"
+                },
+                "createdTime": {
+                    "type": "string"
+                },
+                "cumEntryValue": {
+                    "type": "string"
+                },
+                "cumExitValue": {
+                    "type": "string"
+                },
+                "execType": {
+                    "type": "string"
+                },
+                "fillCount": {
+                    "type": "string"
+                },
+                "leverage": {
+                    "type": "string"
+                },
+                "orderId": {
+                    "type": "string"
+                },
+                "orderPrice": {
+                    "type": "string"
+                },
+                "orderType": {
+                    "type": "string"
+                },
+                "qty": {
+                    "type": "string"
+                },
+                "side": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "updatedTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "shared.OrderHistoryResponse": {
+            "type": "object",
+            "properties": {
+                "avgPrice": {
+                    "description": "CancelType        string  ` + "`" + `json:\"cancelType\"` + "`" + `",
+                    "type": "string"
+                },
+                "createdTime": {
+                    "description": "OrderIv           string  ` + "`" + `json:\"orderIv\"` + "`" + `",
+                    "type": "string"
+                },
+                "cumExecFee": {
+                    "type": "string"
+                },
+                "cumExecQty": {
+                    "type": "string"
+                },
+                "cumExecValue": {
+                    "type": "string"
+                },
+                "orderId": {
+                    "type": "string"
+                },
+                "orderStatus": {
+                    "type": "string"
+                },
+                "orderType": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "profit": {
+                    "type": "number"
+                },
+                "qty": {
+                    "type": "string"
+                },
+                "side": {
+                    "type": "string"
+                },
+                "stopOrderType": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "updatedTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "shared.PositionsData": {
+            "type": "object",
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "creationTime": {
+                    "type": "string"
+                },
+                "entryPrice": {
+                    "type": "string"
+                },
+                "holdMode": {
+                    "type": "string"
+                },
+                "holdSide": {
+                    "type": "string"
+                },
+                "leverage": {
+                    "type": "string"
+                },
+                "liquidationPrice": {
+                    "type": "string"
+                },
+                "margin": {
+                    "type": "string"
+                },
+                "marginCoin": {
+                    "type": "string"
+                },
+                "marginMode": {
+                    "type": "string"
+                },
+                "marketPrice": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "string"
+                },
+                "unrealizedPl": {
                     "type": "string"
                 }
             }

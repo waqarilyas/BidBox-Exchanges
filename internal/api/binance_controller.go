@@ -14,6 +14,17 @@ import (
 	"github.com/kryptomind/bidboxapi/KeyService/response"
 )
 
+// Get Binance Account Details godoc
+// @Summary      Get Binance Account Details
+// @Description  Get Binance Account Details
+// @Tags         binance
+// @Accept       json
+// @Produce      json
+// @Param        email query  string true  "email"
+// @Success      200  {object} shared.AccountData
+// @Failure      400  {string}  bad request
+// @Failure      500  {string}  bad request
+// @Router       /binance/account [get]
 func (server *Server) GetBinanceAccountDetailsData(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
@@ -48,6 +59,17 @@ func (server *Server) GetBinanceAccountDetailsData(w http.ResponseWriter, r *htt
 
 }
 
+// Get Binance Positions Data godoc
+// @Summary      Get Binance Positions Data
+// @Description  Get Binance Positions Data
+// @Tags         binance
+// @Accept       json
+// @Produce      json
+// @Param        email query  string true  "email"
+// @Success      200  {object} []shared.PositionsData
+// @Failure      400  {string}  bad request
+// @Failure      500  {string}  bad request
+// @Router       /binance/positions [get]
 func (server *Server) GetBinanceAccountPositionsData(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
@@ -81,6 +103,17 @@ func (server *Server) GetBinanceAccountPositionsData(w http.ResponseWriter, r *h
 
 }
 
+// Get Binance Order History godoc
+// @Summary      Get Binance Order History
+// @Description  Get Binance Order History
+// @Tags         binance
+// @Accept       json
+// @Produce      json
+// @Param        email query  string true  "email"
+// @Success      200  {object} []shared.OrderHistoryResponse
+// @Failure      400  {string}  bad request
+// @Failure      500  {string}  bad request
+// @Router       /binance/orderHistory [get]
 func (server *Server) GetBinanceOrderHistory(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
@@ -114,15 +147,15 @@ func (server *Server) GetBinanceOrderHistory(w http.ResponseWriter, r *http.Requ
 			side = "short"
 		}
 		state := "Unknown start"
-		if v.Status == "NEW"{
+		if v.Status == "NEW" {
 			state = "New"
-		}else if v.Status == "PARTIALLY_FILLED"{
+		} else if v.Status == "PARTIALLY_FILLED" {
 			state = "PartiallyFilled"
-		}else if v.Status == "FILLED"{
+		} else if v.Status == "FILLED" {
 			state = "Filled"
-		}else if v.Status == "CANCELED"{
+		} else if v.Status == "CANCELED" {
 			state = "Cancelled"
-		}else {
+		} else {
 			state = "Unknown"
 		}
 		ns := shared.OrderHistoryResponse{
@@ -131,7 +164,7 @@ func (server *Server) GetBinanceOrderHistory(w http.ResponseWriter, r *http.Requ
 			Price:         v.Price,
 			Qty:           v.CumQuote,
 			Side:          side,
-			Profit: 	   0.00,
+			Profit:        0.00,
 			OrderStatus:   state,
 			CreatedTime:   fmt.Sprintf("%d", v.Time),
 			UpdatedTime:   fmt.Sprintf("%d", v.UpdateTime),
