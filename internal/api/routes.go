@@ -20,7 +20,7 @@ func (r *Server) InitializeRoutes() {
 	docs.SwaggerInfo.Schemes = []string{"https"}
 
 	r.Router.PathPrefix("/docs").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://stg-api-bidbox.kryptomind.net/docs/doc.json"), //The url pointing to API definition
+		httpSwagger.URL("https://stg-api-bidbox.kryptomind.net/docs/doc.json"), //The url pointing to API definition
 		httpSwagger.DeepLinking(true),
 		httpSwagger.DocExpansion("none"),
 		httpSwagger.DomID("swagger-ui"),
