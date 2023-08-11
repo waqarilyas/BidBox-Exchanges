@@ -467,53 +467,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/bybit/orderHistory": {
-            "get": {
-                "description": "Get Bybit Order History",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "bybit"
-                ],
-                "summary": "Get Bybit Order History",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "email",
-                        "name": "email",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/shared.OrderHistoryResponse"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/bybit/positions": {
             "get": {
                 "description": "Get Bybit Positions",
@@ -1128,7 +1081,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "stg-api-bidbox.kryptomind.net",
 	BasePath:         "/exchanges",
 	Schemes:          []string{},
 	Title:            "BidBox Exchanges Service API",

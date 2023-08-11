@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "stg-api-bidbox.kryptomind.net",
     "basePath": "/exchanges",
     "paths": {
         "/": {
@@ -442,53 +442,6 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/shared.ClosedPnlData"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/bybit/orderHistory": {
-            "get": {
-                "description": "Get Bybit Order History",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "bybit"
-                ],
-                "summary": "Get Bybit Order History",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "email",
-                        "name": "email",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/shared.OrderHistoryResponse"
                             }
                         }
                     },

@@ -135,17 +135,6 @@ func (server *Server) GetBybitCloseProfit_Loss(w http.ResponseWriter, r *http.Re
 
 }
 
-// Get Bybit Order History godoc
-// @Summary      Get Bybit Order History
-// @Description  Get Bybit Order History
-// @Tags         bybit
-// @Accept       json
-// @Produce      json
-// @Param        email query  string true  "email"
-// @Success      200  {object} []shared.OrderHistoryResponse
-// @Failure      400  {string}  bad request
-// @Failure      500  {string}  bad request
-// @Router       /bybit/orderHistory [get]
 func (server *Server) GetBybitOrderHistory(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
