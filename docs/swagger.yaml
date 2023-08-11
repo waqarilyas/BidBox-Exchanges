@@ -1,0 +1,738 @@
+basePath: /exchanges
+definitions:
+  api.KeyResp:
+    type: object
+  bitget.PositionHistory:
+    properties:
+      code:
+        type: string
+      data:
+        properties:
+          endId:
+            type: string
+          list:
+            items:
+              $ref: '#/definitions/bitget.TradeInfo'
+            type: array
+          nextFlag:
+            type: boolean
+        type: object
+      msg:
+        type: string
+    type: object
+  bitget.TradeInfo:
+    properties:
+      closeAvgPrice:
+        type: string
+      closeFee:
+        type: string
+      closeTotalPos:
+        type: string
+      ctime:
+        type: string
+      holdSide:
+        type: string
+      marginCoin:
+        type: string
+      marginMode:
+        type: string
+      netProfit:
+        type: string
+      openAvgPrice:
+        type: string
+      openFee:
+        type: string
+      openTotalPos:
+        type: string
+      pnl:
+        type: string
+      symbol:
+        type: string
+      totalFunding:
+        type: string
+      utime:
+        type: string
+    type: object
+  bybit.Position:
+    properties:
+      adlRankIndicator:
+        type: integer
+      autoAddMargin:
+        type: integer
+      avgPrice:
+        type: string
+      bustPrice:
+        type: string
+      createdTime:
+        type: string
+      cumRealisedPnl:
+        type: string
+      leverage:
+        type: string
+      liqPrice:
+        type: string
+      markPrice:
+        type: string
+      positionBalance:
+        type: string
+      positionIM:
+        type: string
+      positionIdx:
+        type: integer
+      positionMM:
+        type: string
+      positionStatus:
+        type: string
+      positionValue:
+        type: string
+      riskId:
+        type: integer
+      riskLimitValue:
+        type: string
+      side:
+        type: string
+      size:
+        type: string
+      stopLoss:
+        type: string
+      symbol:
+        type: string
+      takeProfit:
+        type: string
+      tpslMode:
+        type: string
+      tradeMode:
+        type: integer
+      trailingStop:
+        type: string
+      unrealisedPnl:
+        type: string
+      updatedTime:
+        type: string
+    type: object
+  bybit.PositionsResponse:
+    properties:
+      result:
+        properties:
+          category:
+            type: string
+          list:
+            items:
+              $ref: '#/definitions/bybit.Position'
+            type: array
+          nextPageCursor:
+            type: string
+        type: object
+      retCode:
+        type: integer
+      retExtInfo:
+        type: object
+      retMsg:
+        type: string
+      time:
+        type: integer
+    type: object
+  models.Exchanges:
+    properties:
+      id:
+        type: string
+      image_src:
+        type: string
+      name:
+        type: string
+      short:
+        type: string
+    type: object
+  models.Key:
+    properties:
+      api_key:
+        type: string
+      key_id:
+        type: string
+      passphrase:
+        type: string
+      secret_key:
+        type: string
+      service:
+        type: string
+      uid:
+        type: string
+      user_email:
+        type: string
+    type: object
+  shared.AccountData:
+    properties:
+      available:
+        type: number
+      equity:
+        type: number
+      marginBalance:
+        type: number
+      unrealizedPl:
+        type: number
+      usdtPnl:
+        type: number
+    type: object
+  shared.ClosedPnlData:
+    properties:
+      avgEntryPrice:
+        type: string
+      avgExitPrice:
+        type: string
+      closedPnl:
+        type: string
+      closedSize:
+        type: string
+      createdTime:
+        type: string
+      cumEntryValue:
+        type: string
+      cumExitValue:
+        type: string
+      execType:
+        type: string
+      fillCount:
+        type: string
+      leverage:
+        type: string
+      orderId:
+        type: string
+      orderPrice:
+        type: string
+      orderType:
+        type: string
+      qty:
+        type: string
+      side:
+        type: string
+      symbol:
+        type: string
+      updatedTime:
+        type: string
+    type: object
+  shared.OrderHistoryResponse:
+    properties:
+      avgPrice:
+        description: CancelType        string  `json:"cancelType"`
+        type: string
+      createdTime:
+        description: OrderIv           string  `json:"orderIv"`
+        type: string
+      cumExecFee:
+        type: string
+      cumExecQty:
+        type: string
+      cumExecValue:
+        type: string
+      orderId:
+        type: string
+      orderStatus:
+        type: string
+      orderType:
+        type: string
+      price:
+        type: string
+      profit:
+        type: number
+      qty:
+        type: string
+      side:
+        type: string
+      stopOrderType:
+        type: string
+      symbol:
+        type: string
+      updatedTime:
+        type: string
+    type: object
+  shared.PositionsData:
+    properties:
+      available:
+        type: string
+      creationTime:
+        type: string
+      entryPrice:
+        type: string
+      holdMode:
+        type: string
+      holdSide:
+        type: string
+      leverage:
+        type: string
+      liquidationPrice:
+        type: string
+      margin:
+        type: string
+      marginCoin:
+        type: string
+      marginMode:
+        type: string
+      marketPrice:
+        type: string
+      symbol:
+        type: string
+      total:
+        type: string
+      unrealizedPl:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is BidBox Exchanges Service.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: BidBox Exchanges Service API
+  version: "1.0"
+paths:
+  /:
+    post:
+      consumes:
+      - application/json
+      description: Add New Exchange
+      parameters:
+      - description: add exchange
+        in: body
+        name: exchange
+        required: true
+        schema:
+          $ref: '#/definitions/models.Exchanges'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Exchanges'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Add New Exchange
+      tags:
+      - exchanges
+  /binance/account:
+    get:
+      consumes:
+      - application/json
+      description: Get Binance Account Details
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/shared.AccountData'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Binance Account Details
+      tags:
+      - binance
+  /binance/orderHistory:
+    get:
+      consumes:
+      - application/json
+      description: Get Binance Order History
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/shared.OrderHistoryResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Binance Order History
+      tags:
+      - binance
+  /binance/positions:
+    get:
+      consumes:
+      - application/json
+      description: Get Binance Positions Data
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/shared.PositionsData'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Binance Positions Data
+      tags:
+      - binance
+  /bitget/account:
+    get:
+      consumes:
+      - application/json
+      description: Get Nitget Account Details
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/shared.AccountData'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get Bitget Account Details
+      tags:
+      - bitget
+  /bitget/historical-positions:
+    get:
+      consumes:
+      - application/json
+      description: Get Nitget Historical Positions
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bitget.PositionHistory'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Bitget Historical Positions
+      tags:
+      - bitget
+  /bitget/orderHistory:
+    get:
+      consumes:
+      - application/json
+      description: Get Nitget Order History
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/shared.OrderHistoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Bitget Order History
+      tags:
+      - bitget
+  /bitget/positions:
+    get:
+      consumes:
+      - application/json
+      description: Get Nitget Open Positions
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/shared.PositionsData'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get Bitget Open Positions
+      tags:
+      - bitget
+  /bybit/account:
+    get:
+      consumes:
+      - application/json
+      description: Get Bybit Account Details
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/shared.AccountData'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Bybit Account Details
+      tags:
+      - bybit
+  /bybit/closedpnl:
+    get:
+      consumes:
+      - application/json
+      description: Get Bybit Closed PnL
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/shared.ClosedPnlData'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Bybit Closed PnL
+      tags:
+      - bybit
+  /bybit/orderHistory:
+    get:
+      consumes:
+      - application/json
+      description: Get Bybit Order History
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/shared.OrderHistoryResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Bybit Order History
+      tags:
+      - bybit
+  /bybit/positions:
+    get:
+      consumes:
+      - application/json
+      description: Get Bybit Positions
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bybit.PositionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Bybit Positions
+      tags:
+      - bybit
+  /keys:
+    get:
+      consumes:
+      - application/json
+      description: Get Key
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Key'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Key
+      tags:
+      - keys
+    post:
+      consumes:
+      - application/json
+      description: Create Key
+      parameters:
+      - description: create key
+        in: body
+        name: key
+        required: true
+        schema:
+          $ref: '#/definitions/models.Key'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.KeyResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.KeyResp'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/api.KeyResp'
+      summary: Create Key
+      tags:
+      - keys
+  /keys/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Key By Id
+      parameters:
+      - description: Key ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Key'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Get Key By Id
+      tags:
+      - keys
+  /supported:
+    get:
+      consumes:
+      - application/json
+      description: Get Supported Exchanges
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Exchanges'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Supported Exchanges
+      tags:
+      - exchanges
+swagger: "2.0"
