@@ -8,14 +8,14 @@ import (
 	"time"
 
 	"github.com/kryptomind/bidboxapi/KeyService/helpers"
-	// "github.com/kryptomind/bidboxapi/AccountsService/api/helpers"
+	"github.com/kryptomind/bidboxapi/KeyService/utils"
 )
 
 func GetBitgetAccountData(apiKey string, apiSecret string, passphrase string) (*AccountData, error) {
 	expires := helpers.GetBitgetServerTimeStamp()
 
 	host := "https://api.bitget.com"
-	path := "/api/mix/v1/account/accounts?productType=" + helpers.PRODUCT_TYPE
+	path := "/api/mix/v1/account/accounts?productType=" + utils.PRODUCT_TYPE
 	url := host + path
 
 	signature := GenerateBitgetSignature(apiSecret, "GET", path, expires)
@@ -101,7 +101,7 @@ func PerformBitgetApikeyInformation(apiKey, apiSecret, passphrase string) (*ApiK
 
 func PerformBitgetPositionQuery(apiKey, apiSecret, passphrase string) (*MarginDataResponse, error) {
 	expires := helpers.GetBitgetServerTimeStamp()
-	uri := "/api/mix/v1/position/allPosition?productType=" + helpers.PRODUCT_TYPE
+	uri := "/api/mix/v1/position/allPosition?productType=" + utils.PRODUCT_TYPE
 	signature := GenerateBitgetSignature(apiSecret, "GET", uri, expires)
 
 	url := fmt.Sprintf("https://api.bitget.com%s", uri)

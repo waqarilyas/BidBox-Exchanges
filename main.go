@@ -7,9 +7,10 @@ import (
 
 	nested "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/joho/godotenv"
-	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	"github.com/kryptomind/bidboxapi/KeyService/internal/api"
 	"github.com/kryptomind/bidboxapi/KeyService/internal/database"
+	"github.com/kryptomind/bidboxapi/KeyService/internal/models"
+	"github.com/kryptomind/bidboxapi/KeyService/utils"
 )
 
 var server = api.Server{}
@@ -37,32 +38,18 @@ func Run() {
 	databaseConnection.Initialize(os.Getenv("DB_DRIVER"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
 	server.DB = databaseConnection.DB
 
-	helpers.InitSharedData(databaseConnection.DB)
+	var set models.Settings
+	settings, err := set.GetSettings(databaseConnection.DB)
+	if err != nil {
+		return
+	}
 
-	// response, err := bitget.PerformBitgetApikeyInformation("bg_7c52d3c7de17a4c18d8f1eb835b71158", "f4a466791e9779b55c9f15250f93747290bab56d20ee57963fc15db249638323", "thisisapassphrase")
-	// if err != nil {
-	// 	fmt.Println("--error calling api---", err)
-	// }
+	utils.InitSharedData(settings.IsTestnet)
 
-	// fmt.Println("---response----", response)
 	databaseConnection.Run(":8080")
 
 }
 
-//	@title			BidBox Exchanges Service API
-//	@version		1.0
-//	@description	This is BidBox Exchanges Service.
-//	@termsOfService	http://swagger.io/terms/
-
-//	@contact.name	API Support
-//	@contact.url	http://www.swagger.io/support
-//	@contact.email	support@swagger.io
-
-//	@license.name	Apache 2.0
-//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host		stg-api-bidbox.kryptomind.net
-// @BasePath	/exchanges
 func main() {
 	Run()
 }

@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/kryptomind/bidboxapi/KeyService/utils"
 )
 
 func ValidateBitgetKeys(apiSecret string, apiKey string, passphrase string) (string, error) {
@@ -84,7 +86,7 @@ func GetBitgetServerTimeStamp() string {
 
 func GetAccountDetailsList(apiSecret string, apiKey string, passphrase string) (string, error) {
 	host := "https://api.bitget.com"
-	path := "/api/mix/v1/account/accounts?productType=" + PRODUCT_TYPE
+	path := "/api/mix/v1/account/accounts?productType=" + utils.PRODUCT_TYPE
 	url := host + path
 
 	serverTimestamp := GetBitgetServerTimeStamp()

@@ -5,13 +5,12 @@ import (
 	"html"
 	"strings"
 
-	"github.com/kryptomind/bidboxapi/KeyService/helpers"
-	//	log "github.com/sirupsen/logrus"
-
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
+	"github.com/kryptomind/bidboxapi/KeyService/helpers"
 	"golang.org/x/crypto/bcrypt"
 )
+
 type UpdateLeverage struct {
 	Category     string `json:"category"`
 	Symbol       string `json:"symbol"`
@@ -89,29 +88,8 @@ func (u *Key) Validate() error {
 		return errors.New("user_email is required")
 	}
 
-	// found := false
-	// for _, v := range services {
-	// 	if strings.ToLower(u.Service) == v {
-	// 		found = true
-	// 		fmt.Println(found)
-	// 		break
-	// 	}
-	// }
-	// if !found {
-	// 	return errors.New("service not found")
-	// }
-	// client := binance.NewClient(u.ApiKey, u.SecretKey)
-	// _, err := client.NewListPricesService().Do(context.Background())
-	// if err != nil {
-	// 	return err
-	// }
 	return nil
 }
-
-/*
-func (u *Key) TestforBinance() error {
-
-}*/
 
 func (u *Key) SaveKey(db *gorm.DB) (*Key, error) {
 	err := db.Debug().Create(&u).Error
