@@ -84,7 +84,7 @@ func GetBitgetServerTimeStamp() string {
 
 func GetAccountDetailsList(apiSecret string, apiKey string, passphrase string) (string, error) {
 	host := "https://api.bitget.com"
-	path := "/api/mix/v1/account/accounts?productType=sumcbl"
+	path := "/api/mix/v1/account/accounts?productType=" + PRODUCT_TYPE
 	url := host + path
 
 	serverTimestamp := GetBitgetServerTimeStamp()
