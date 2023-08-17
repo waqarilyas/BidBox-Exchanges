@@ -15,7 +15,7 @@ func GetBitgetAccountData(apiKey string, apiSecret string, passphrase string) (*
 	expires := helpers.GetBitgetServerTimeStamp()
 
 	host := "https://api.bitget.com"
-	path := "/api/mix/v1/account/accounts?productType=sumcbl"
+	path := "/api/mix/v1/account/accounts?productType=" + helpers.PRODUCT_TYPE
 	url := host + path
 
 	signature := GenerateBitgetSignature(apiSecret, "GET", path, expires)
@@ -101,7 +101,7 @@ func PerformBitgetApikeyInformation(apiKey, apiSecret, passphrase string) (*ApiK
 
 func PerformBitgetPositionQuery(apiKey, apiSecret, passphrase string) (*MarginDataResponse, error) {
 	expires := helpers.GetBitgetServerTimeStamp()
-	uri := "/api/mix/v1/position/allPosition?productType=sumcbl"
+	uri := "/api/mix/v1/position/allPosition?productType=" + helpers.PRODUCT_TYPE
 	signature := GenerateBitgetSignature(apiSecret, "GET", uri, expires)
 
 	url := fmt.Sprintf("https://api.bitget.com%s", uri)
