@@ -43,7 +43,11 @@ func TransformAccountsResponse(accountsData AccountData) shared.AccountData {
 
 		totalEquity += equity
 
-		marginRate := equity / marginEquity
+		marginRate := 0.0
+
+		if marginEquity != 0 {
+			marginRate = equity / marginEquity
+		}
 		marginPnl := (marginEquity - available) * marginRate
 		usdtPnl += marginPnl
 

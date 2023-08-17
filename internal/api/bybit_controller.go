@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/kryptomind/bidboxapi/KeyService/internal/exchange/bybit"
@@ -23,6 +24,8 @@ import (
 // @Failure      500  {string}  bad request
 // @Router       /bybit/account [get]
 func (server *Server) GetBybitAccountDetails(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("GetBybitAccountDetails")
+
 	userEmail := r.URL.Query().Get("email")
 	if userEmail == "" {
 		response.ERROR(w, http.StatusBadRequest, errors.New("email is required"))
